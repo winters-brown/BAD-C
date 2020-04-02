@@ -4,7 +4,8 @@
   "description": "Behavioural Analysis Data Collection Program for Great Lakes Autism and Research Center",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "test": "node main.js"
   },
   "repository": {
     "type": "git",
