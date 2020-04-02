@@ -1,0 +1,12 @@
+{
+    "departments": [
+        {
+            "ID": 0,
+            "Name": "GLC-HAC"
+        },
+        {
+            "ID": 1,
+            "Name": "GLC-ITX"
+        }
+    ]
+}

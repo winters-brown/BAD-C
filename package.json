@@ -1,0 +1,20 @@
+{
+  "name": "bad-c",
+  "version": "1.0.0",
+  "description": "Behavioural Analysis Data Collection Program for Great Lakes Autism and Research Center",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://frankenstein:1207/winters-brown/BAD-C.git"
+  },
+  "author": "Joshua Winters-Brown",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.5"
+  }
+}
