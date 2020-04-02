@@ -7,7 +7,7 @@ const auth = require('./src/routes/authenticate');
 
 // Local Constants
 const app = express();
-const port = 80;
+const port = 8080;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
