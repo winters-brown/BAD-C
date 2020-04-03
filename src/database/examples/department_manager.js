@@ -61,7 +61,7 @@ function get_department(name) {
 // new_department({ Name: "NAME" });
 
 // Demo only will have to scape goat contents
-// get_departments();
+get_departments();
 
 // Will return only one department
 // get_department("NAME");
