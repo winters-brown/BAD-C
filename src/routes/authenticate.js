@@ -100,13 +100,36 @@ router.get('/logout', (req, res) => {
 });
 
 router.post('/signup', (req, res) => {
-    res.redirect('/errors/501.html');
+    document.findOne({ Email: req.body.Email }, (err, results) => {
+        if (err) return console.error(err);
+        if (!results) {
+            // Set email and password as cookie for 18 hours.
+            res.cookie("Email", req.body.email, { maxAge: 18 * 3600000, httpOnly: true });
+            res.cookie("Password", req.body.password, { maxAge: 18 * 3600000, httpOnly: true });
+
+            // Keep local copy temporarily
+            var clearPass = req.body.Password;
+
+            bcrypt.hash(clearPass, saltRounds).then(function (hash) {
+                req.body.Password = hash;
+                var new_user = new document(req.body);
+
+                new_user.save();
+                res.redirect('/controller/dashboard.html')
+            });
+
+
+        } else {
+            // This is a valid user, redirect to login.
+            res.redirect('/login.html');
+        }
+    });
 });
 
 // router.get('/hash/:password', (req, res) => {
-//     bcrypt.hash(req.params.password, saltRounds).then(function (hash) {
-//         res.send(hash);
-//     });
+// bcrypt.hash(req.params.password, saltRounds).then(function (hash) {
+//     res.send(hash);
+// });
 // });
 
 

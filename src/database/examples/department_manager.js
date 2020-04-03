@@ -15,7 +15,7 @@ database.on('error', console.error.bind(console, 'connection error:'));
 function new_department(obj) {
     database.once('open', () => {
         // Ensures there is no two departments with the same name
-        var query = departments.findOneAndDelete({ Name: obj.Name });
+        var query = departments.findOneAndDelete(obj);
         var promise = query.exec();
 
         // Creates new department with object
