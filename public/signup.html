@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <!-- Responsive Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>BAD-C | {action}</title>
+    <title>BAD-C | Signup</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -22,6 +22,47 @@
 
     <br>
 
+    <!-- Login Form -->
+    <div class="row d-flex justify-content-center" style="padding: 0%;">
+        <div class="card col-md-6" style="padding: 0px;">
+            <!-- Login Header -->
+            <div class="card-header">
+                Login
+            </div>
+
+            <!-- Login Body -->
+            <div class="class-body">
+                <br>
+                <form action="/api/auth/signup" method="post" class="col-12 justify-content-center">
+                    <p>Personal Information</p>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="First name" name="First_Name">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Last name" name="Last_Name">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" aria-describedby="emailHelp" name="Email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <br>
+            </div>
+            <div class="card-footer text-muted">
+                <a href="/login.html">Already have an account?</a>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Bootstrap JS & Jquery -->
