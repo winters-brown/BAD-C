@@ -16,6 +16,7 @@ database.on('error', console.error.bind(console, 'connection error:'));
 let router = express.Router();
 
 router.get('/all', (req, res) => {
+    // TODO: Secure this api behind verification wall.
     document.find((err, result) => {
         res.send(result);
     });
