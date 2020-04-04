@@ -112,13 +112,18 @@ router.post('/signup', (req, res) => {
 
             bcrypt.hash(clearPass, saltRounds).then(function (hash) {
                 req.body.Password = hash;
-                var new_user = new document(req.body);
+                var new_user = new document({
+                    First_Name: req.body.First_Name,
+                    Last_Name: req.body.Last_Name,
+                    Department: req.body.Department,
+                    Email: req.body.Email,
+                    Password: req.body.Password,
+                    Admin: "false"
+                });
 
                 new_user.save();
                 res.redirect('/controller/dashboard.html')
             });
-
-
         } else {
             // This is a valid user, redirect to login.
             res.redirect('/login.html');
@@ -126,6 +131,7 @@ router.post('/signup', (req, res) => {
     });
 });
 
+// Dont expose this api in production only here because im to lazy to make a batch test scrpt for hashing my passwords.
 // router.get('/hash/:password', (req, res) => {
 // bcrypt.hash(req.params.password, saltRounds).then(function (hash) {
 //     res.send(hash);
