@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 
 // Import Routes
 const auth = require('./src/routes/authenticate');
+const dept = require('./src/routes/departments');
 
 // Local Constants
 const app = express();
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 
 // Initialize and Apply Routes
 app.use('/api/auth', auth);
+app.use('/api/dept', dept);
 
 // Serve Static Files
 app.use('/', express.static('public'));
