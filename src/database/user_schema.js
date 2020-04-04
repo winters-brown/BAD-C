@@ -4,6 +4,7 @@ var Schema = MongooseClient.Schema;
 var User_Schema = new Schema({
     First_Name: String,
     Last_Name: String,
+    Department: String,
     Email: String,
     Password: String,
     Admin: String
