@@ -16,7 +16,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/index.html">{{company_name}}</a>
+            <a class="navbar-brand" href="/index.html">BAD-C</a>
         </div>
     </nav>
 
@@ -24,10 +24,10 @@
 
     <!-- Login Form -->
     <div class="row d-flex justify-content-center" style="padding: 0%;">
-        <div class="card col-md-6" style="padding: 0px;">
+        <div class="card col-auto col-md-6" style="padding: 0px;">
             <!-- Login Header -->
             <div class="card-header">
-                Login
+                Signup
             </div>
 
             <!-- Login Body -->
@@ -37,24 +37,55 @@
                     <p>Personal Information</p>
                     <div class="row">
                         <div class="col">
-                            <input type="text" class="form-control" placeholder="First name" name="First_Name">
+                            <input type="text" class="form-control" placeholder="First name" name="First_Name" required>
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control" placeholder="Last name" name="Last_Name">
+                            <input type="text" class="form-control" placeholder="Last name" name="Last_Name" required>
                         </div>
                     </div>
                     <br>
                     <div class="form-group">
+                        <label for="Department">Department</label>
+                        <select class="form-control" id="form-control" name="Department" required>
+                        </select>
+                        <script>
+
+                            // Create a request variable and assign a new XMLHttpRequest object to it.
+                            var request = new XMLHttpRequest()
+
+                            // Open a new connection, using the GET request on the URL endpoint
+                            request.open('GET', '/api/dept/all', true)
+
+                            request.onload = function () {
+                                // Begin accessing JSON data here
+                                var data = JSON.parse(this.response);
+
+                                data.forEach(departments => {
+                                    // Capture form-select as var
+                                    var Department = document.getElementById("form-control");
+                                    // Create new option
+                                    var option = document.createElement("option");
+                                    // Fill option with value
+                                    option.text = departments.Name;
+                                    // Add option to form-select
+                                    Department.add(option);
+                                });
+                            }
+
+                            // Send request
+                            request.send()
+                        </script>
+                    </div>
+                    <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" aria-describedby="emailHelp" name="Email">
+                        <input type="email" class="form-control" aria-describedby="emailHelp" name="Email" required>
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                             else.</small>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" name="Password">
+                        <input type="password" class="form-control" name="Password" required>
                     </div>
-                    <input type="text" name="Admin" value="false" hidden>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
                 <br>
