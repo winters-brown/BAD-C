@@ -1,24 +1,19 @@
 {
-  "name": "bad-c",
+  "name": "BAD-C",
   "version": "1.0.0",
-  "description": "Behavioural Analysis Data Collection Program for Great Lakes Autism and Research Center",
-  "main": "main.js",
+  "description": "Behavioral Analysis Data Collection, BAD-C is a program made for the Great Lakes Autism Research facility's to help collect information on children behaviors",
+  "main": "index.js",
   "scripts": {
-    "start": "node main.js",
-    "test": "node test.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "http://frankenstein:1207/winters-brown/BAD-C.git"
+    "url": "git+https://github.com/winters-brown/Express-Template.git"
   },
   "author": "Joshua Winters-Brown",
   "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^4.0.1",
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
-    "express": "^4.17.1",
-    "mongodb": "^3.5.5",
-    "mongoose": "^5.9.7"
-  }
+  "bugs": {
+    "url": "https://github.com/winters-brown/Express-Template/issues"
+  },
+  "homepage": "https://github.com/winters-brown/Express-Template#readme"
 }
