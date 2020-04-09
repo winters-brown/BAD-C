@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
 // Import Routes
-const temp = require('./src/routes/template');
+const auth = require('./src/routes/auth');
+const debug = require('./src/routes/debug');
 
 // Local Constants
 const app = express();
@@ -18,9 +19,12 @@ app.use(cookieParser());
 // parse application/json
 app.use(bodyParser.json());
 
-// Initialize and Apply Routes
-app.use('/temp', temp);
+// Initialize and Apply Routes for API
+app.use('/api/v1/auth/', auth);
+app.use('/api/v1/debug/', debug);
 
 // Serve Static Files
 app.use('/', express.static('public'));
+
+// TODO: Do better here lol.
 app.listen(port, () => console.log(`Server Listening on ${port}!`));
