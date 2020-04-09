@@ -81,10 +81,6 @@ router.post('/login', (req, res) => {
 });
 
 // Verify user email and password match
-
-res.json(client);
-});
-
 router.get('/logout', (req, res) => {
     // Set cookies to be null. Protects clients personal identification information.
     res.cookie("id", null, { maxAge: 900000, httpOnly: true });
