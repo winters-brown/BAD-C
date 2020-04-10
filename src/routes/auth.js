@@ -36,7 +36,6 @@ router.get('/login', (req, res) => {
             // This isnt a valid user, redirect to login.html
             res.redirect('/');
         } else {
-            // TODO: Figure this one out
             // Redirect user with some logic :P
             if (results.admin == 1) {
                 // IF admin return admin dashboard
@@ -78,11 +77,9 @@ router.post('/login', (req, res) => {
                     results.session_token = uuid.v4();
                     results.save();
 
-                    // TODO: Generate unique session_token
                     res.cookie("id", results._id, { maxAge: 2 * 24 * 3600000, httpOnly: true });
                     res.cookie("session_token", results.session_token, { maxAge: 2 * 24 * 3600000, httpOnly: true });
 
-                    // TODO: Figure this one out
                     // Redirect user with some logic :P
                     if (results.admin == 1) {
                         // IF admin return admin dashboard
