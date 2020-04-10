@@ -1,7 +1,12 @@
 // Import Librarys
 const express = require('express');
+const bcrypt = require('bcrypt');
+
 
 // Local Constants
+// Rounds on password for bcrypt
+const saltRounds = 10;
+// Express Router Object
 let router = express.Router();
 
 router.get('/', (req, res) => {
