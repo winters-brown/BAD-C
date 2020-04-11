@@ -25,8 +25,6 @@ let router = express.Router();
 
 // Redirect to index page
 router.get('/login', (req, res) => {
-    console.log(req.cookies);
-
     // Search database for email
     document.findOne({ _id: req.cookies.id, session_token: req.cookies.session_token }, (err, results) => {
         // Handle any errors that might occure while reading databse.
@@ -42,7 +40,7 @@ router.get('/login', (req, res) => {
                 res.sendFile(path.join(__dirname, '../../private/admin/dashboard.html'));
             } else {
                 // IF controller return controller dashboard
-                res.sendFile(path.join(__dirname, '../../private/controller/dashboard.html'));
+                res.redirect('/api/v1/controller/dashboard');
             }
         }
     });
@@ -86,7 +84,7 @@ router.post('/login', (req, res) => {
                         res.sendFile(path.join(__dirname, '../../private/admin/dashboard.html'));
                     } else {
                         // IF controller return controller dashboard
-                        res.sendFile(path.join(__dirname, '../../private/controller/dashboard.html'));
+                        res.redirect('/api/v1/controller/dashboard');
                     }
                 }
             });
