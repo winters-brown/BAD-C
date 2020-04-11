@@ -11,12 +11,6 @@ const saltRounds = 10;
 // Configure our Mongoose Client
 MongooseClient.connect('mongodb://localhost/bad-c', { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Connect Mongoose Client
-var database = MongooseClient.connection;
-
-// Check for connection errors
-database.on('error', console.error.bind(console, 'connection error:'));
-
 // Local Constants
 let router = express.Router();
 
