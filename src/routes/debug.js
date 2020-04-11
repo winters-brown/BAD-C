@@ -26,6 +26,7 @@ router.delete('/', (req, res) => {
     res.json(req.body);
 });
 
+// TODO: Do not expose in production!!!
 router.get('/hash/:password', (req, res) => {
     bcrypt.hash(req.params.password, saltRounds).then(function (hash) {
         res.send(hash);

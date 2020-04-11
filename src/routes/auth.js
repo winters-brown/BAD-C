@@ -48,7 +48,7 @@ router.get('/login', (req, res) => {
     });
 });
 
-// Handle login page
+// Verify user email and password match
 router.post('/login', (req, res) => {
     // Capture Login Credentials
     let client = {
@@ -94,7 +94,7 @@ router.post('/login', (req, res) => {
     });
 });
 
-// Verify user email and password match
+// Remove cookies and destroy session token stored.
 router.get('/logout', (req, res) => {
     if (req.cookies.id == "j:null") {
         res.sendFile(path.join(__dirname, '../../private/logout.html'));
