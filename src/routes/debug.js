@@ -2,7 +2,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 
-
 // Local Constants
 // Rounds on password for bcrypt
 const saltRounds = 10;
