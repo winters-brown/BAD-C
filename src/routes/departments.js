@@ -35,8 +35,7 @@ router.get('/all', (req, res) => {
                 if (err) return console.error(err);
                 // If we get no users under that email
                 if (!results) {
-                    // TODO: create proper error lol.
-                    res.send("error, no objects in database");
+                    res.send("Error <br>Could not find any objects in database!");
                 } else {
                     // Return JSON object
                     res.json(results);
@@ -62,8 +61,7 @@ router.get('/:id', (req, res) => {
                 if (err) return console.error(err);
                 // If we get no users under that email
                 if (!results) {
-                    // TODO: make a proper error page.
-                    res.send("error, no object by that ID in database");
+                    res.send("Error <br>Could not find any objects in database!");
                 } else {
                     // Return JSON object
                     res.json(results);
@@ -85,8 +83,7 @@ router.post('/', (req, res) => {
         } else {
             // Check if user provided is an admin
             if(results.admin == 0) {
-                // TODO: Make a proper error redirect.
-                res.send("Needs admin");
+                res.send("Error <br>You must be an admin to use this feature!");
             } else {
                 // Create new database document.
                 var new_department = new document({
@@ -114,14 +111,13 @@ router.put('/', (req, res) => {
             res.redirect('/api/v1/auth/login');
         } else {
             if(results.admin == 0) {
-                // TODO: Make a proper error
-                res.send("Needs admin");
+                res.send("Error <br>You must be an admin to use this feature!");
             } else {
                 // Find an object by that id and update with req.body contents
                 document.updateOne({_id: req.body.id}, req.body, (err) => {
                     // Check if there was an error
                     if (err) res.send("Error updating object in database");
-                    // TODO: What happens after I update the object?
+                    // TODO: What happens after I update the object? Probably just a redirect
                     res.send("Object updated");
                 });
             }
@@ -140,14 +136,13 @@ router.delete('/', (req, res) => {
             res.redirect('/api/v1/auth/login');
         } else {
             if(results.admin == 0) {
-                // TODO: Make a proper error
-                res.send("Needs admin");
+                res.send("Error <br>You must be an admin to use this feature!");
             } else {
                 // Find object in database with contents of req.body and delete it.
                 document.deleteOne(req.body, (err) => {
                     // Check if there were any errors
                     if (err) res.send(err);
-                    // TODO: What happens after I delete the object?
+                    // TODO: What happens after I delete the object? Probably just a redirect
                     res.send("Object Deleted");
                 });
             }
