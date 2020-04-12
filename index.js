@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
 // Import Routes
+const user = require('./src/routes/users');
 const auth = require('./src/routes/auth');
 const debug = require('./src/routes/debug');
 const controller = require('./src/routes/controller');
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 // Initialize and Apply Routes for API
+app.use('/api/v1/users/', user);
 app.use('/api/v1/auth/', auth);
 app.use('/api/v1/debug/', debug);
 app.use('/api/v1/controller/', controller);
