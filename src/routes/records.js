@@ -29,6 +29,5 @@ router.post('/new', (req, res) => {
     });    
 });
 
-
 // Export router contents
 module.exports = router;
