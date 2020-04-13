@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 const user = require('./src/routes/users');
 const auth = require('./src/routes/auth');
 const debug = require('./src/routes/debug');
+const records = require('./src/routes/records');
 const controller = require('./src/routes/controller');
 const departments = require('./src/routes/departments');
 
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 app.use('/api/v1/users/', user);
 app.use('/api/v1/auth/', auth);
 app.use('/api/v1/debug/', debug);
+app.use('/api/v1/records/', records);
 app.use('/api/v1/controller/', controller);
 app.use('/api/v1/dept/', departments);
 
