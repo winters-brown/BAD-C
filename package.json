@@ -4,7 +4,8 @@
   "description": "Behavioral Analysis Data Collection, BAD-C is a program made for the Great Lakes Autism Research facility's to help collect information on children behaviors",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
