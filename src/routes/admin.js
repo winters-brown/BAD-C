@@ -67,8 +67,5 @@ router.get('/manage/patients', (req, res) => {
     });    
 });
 
-
-
-
 // Export router contents
 module.exports = router;
