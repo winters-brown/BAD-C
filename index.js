@@ -37,4 +37,4 @@ app.use('/api/v1/dept/', departments);
 app.use('/', express.static('public'));
 
 // TODO: Do better here lol.
-// app.listen(port, () => console.log(`Server Listening on ${port}!`));
+app.listen(port, () => console.log(`Server Listening on ${port}!`));
