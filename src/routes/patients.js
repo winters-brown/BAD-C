@@ -3,7 +3,7 @@ const express = require('express');
 
 // Local Constants
 var MongooseClient = require('mongoose');
-const document = require('../schema/departments');
+const document = require('../schema/patients');
 const users = require('../schema/users');
 
 // Configure our Mongoose Client
