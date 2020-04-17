@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 
 var MongooseClient = require('mongoose');
-const document = require('../schema/users');
+const users = require('../schema/users');
 
 // Rounds on password for bcrypt
 const saltRounds = 10;
@@ -16,7 +16,7 @@ let router = express.Router();
 
 router.get('/dashboard', (req, res) => {
     // Search database for email
-    document.findOne({ _id: req.cookies.id, session_token: req.cookies.session_token }, (err, results) => {
+    users.findOne({ _id: req.cookies.id, session_token: req.cookies.session_token }, (err, results) => {
         // Handle any errors that might occure while reading databse.
         if (err) return console.error(err);
         // If we get no users under that email
