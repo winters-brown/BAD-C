@@ -25,7 +25,7 @@ router.get('/login', (req, res) => {
         // If we get no users under that email
         if (!results) {
             // This isnt a valid user, redirect to login.html
-            res.redirect('/');
+            res.redirect('/login.html');
         } else {
             // Redirect user with some logic :P
             if (results.admin == 1) {
@@ -54,14 +54,14 @@ router.post('/login', (req, res) => {
         // If we get no users under that email
         if (!results) {
             // This isnt a valid user, redirect to login.html
-            res.redirect('/');
+            res.redirect('/login.html');
         } else {
             // Now grab their password from the database and verify that the provided password is correct.
             bcrypt.compare(req.body.password, results.password).then((correct_password) => {
                 // Password does not match hash in our database
                 if (!correct_password) {
                     // This isnt a valid user, redirect to login.html
-                    res.redirect('/');
+                    res.redirect('/login.html');
                 } else {
                     // Update browser cookies for 18 hours.
                     // TEST
@@ -74,7 +74,7 @@ router.post('/login', (req, res) => {
                     // Redirect user with some logic :P
                     if (results.admin == 1) {
                         // IF admin return admin dashboard
-                        res.sendFile(path.join(__dirname, '../../private/admin/dashboard.html'));
+                        res.redirect('/api/v1/admin/dashboard');
                     } else {
                         // IF controller return controller dashboard
                         res.redirect('/api/v1/controller/dashboard');
