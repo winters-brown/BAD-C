@@ -20,7 +20,7 @@ module.exports = router;
 function template_authentication() {
 	// Store client cookies locally.
 	const kID = req.cookies.id;
-	const kSession_token = req.cookie.session_token;
+	const kSession_token = req.cookies.session_token;
 
 	// Build our query for later.
 	var query = {
