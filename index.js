@@ -9,6 +9,7 @@ const port = 8080;
 
 // Import Routes
 const auth = require("./src/routes/auth");
+const admin = require("./src/routes/admin");
 
 // Enforce Middleware
 // Parse application/x-www-form-urlencoded
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 
 // Initialize and Apply Routes for API
 app.use("/api/v2/auth/", auth);
+app.use("/api/v2/admin/", admin);
 
 // Serve Static Files
 app.use("/", express.static("public"));
