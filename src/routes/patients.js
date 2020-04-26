@@ -104,17 +104,19 @@ router.put('/:id', (req, res) => {
 
 router.get('/new', (req, res) => {
     // Search database for email
+    res.send(req.cookies);
+
     users.findOne({ _id: req.cookies.id, session_token: req.cookies.session_token }, (err, results) => {
         // Handle any errors that might occure while reading databse.
         if (err) return console.error(err);
         // If we get no users under that email
-        if (!results) {
+        if (!results) { 
             // This isnt a valid user, redirect to login.html
             res.redirect('/');
         } else {
             // Redirect user with some logic :P
             if (results.admin == 1) {
-                res.send("New patient page");
+                res.sendFile(path.join(__dirname + '../../private/admin/new_patient.html'));
             } else {
                 // IF controller return controller dashboard
                 res.redirect('/api/v1/auth/login');
@@ -141,9 +143,8 @@ router.post('/new', (req, res) => {
                 new_patient.save();
 
                 // Respond appropriately
-                res.send("New patient page");
+                res.send("/api/v1/admin/dashboard");
             } else {
-                // IF controller return controller dashboard
                 res.redirect('/api/v1/auth/login');
             }
         }

@@ -8,7 +8,7 @@ const user = require('./src/routes/users');
 const auth = require('./src/routes/auth');
 const admin = require('./src/routes/admin');
 const debug = require('./src/routes/debug');
-const patients = require('./src/routes/patients');
+const patients = require('./src/routes/patients-t');
 const records = require('./src/routes/records');
 const controller = require('./src/routes/controller');
 const departments = require('./src/routes/departments');
@@ -39,4 +39,4 @@ app.use('/api/v1/dept/', departments);
 app.use('/', express.static('public'));
 
 // TODO: Do better here lol.
-// app.listen(port, () => console.log(`Server Listening on ${port}!`));
+app.listen(port, () => console.log(`Server Listening on ${port}!`));

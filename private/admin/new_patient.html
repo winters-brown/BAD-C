@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>BAD-C | New Patient</title>
+	</head>
+
+	<body>
+		<form action="/api/v1/debug/" method="POST">
+			<ul id="new_patient">
+				<li>
+					<label for="first_name">First Name</label><br />
+					<input
+						type="text"
+						name="first_name"
+						id="first_name"
+						required
+					/>
+				</li>
+				<li>
+					<label for="last_name">Last Name</label><br />
+					<input
+						type="text"
+						name="last_name"
+						id="last_name"
+						required
+					/>
+				</li>
+				<li>
+					<div id="behaviour_generator">
+						<label for="behaviour_prompt">Behaviour Prompt</label
+						><br />
+						<input
+							type="text"
+							name="behaviour_prompt"
+							placeholder=""
+							id="behaviour_prompt"
+							required
+						/>
+						<br />
+						<label for="behaviour_question_type"
+							>Question Type</label
+						>
+						<br />
+						<select
+							name="behaviour_question_type"
+							id="behaviour_question_type"
+							required
+						>
+							<option value="" selected disabled> </option>
+							<option value="counter">Counter</option>
+							<option value="true_or_false">True or False</option>
+						</select>
+					</div>
+				</li>
+			</ul>
+			<button type="button" onclick="add_behaviour();">
+				Add Behaviour
+			</button>
+			<button type="submit">Submit</button>
+		</form>
+
+		<script>
+			function add_behaviour() {
+				document.getElementById("new_patient").innerHTML +=
+					' \
+                    <li> \
+                        <div id="behaviour_generator"> \
+                            <label for="behaviour_prompt">Behaviour Prompt</label \
+                            ><br /> \
+                            <input \
+                                type="text" \
+                                name="behaviour_prompt" \
+                                placeholder="" \
+                                id="behaviour_prompt" \
+                                required \
+                            /> \
+                            <br /> \
+                            <label for="behaviour_question_type" \
+                            >Question Type</label \
+                            > \
+                            <br /> \
+                            <select \
+                                name="behaviour_question_type" \
+                                id="behaviour_question_type" \
+                                required \
+                            > \
+                                <option value="" selected disabled> </option> \
+                                <option value="counter">Counter</option> \
+                                <option value="true_or_false">True or False</option> \
+                            </select> \
+                        </div > \
+                    </li> \
+                        ';
+			}
+
+			function remove_behaviour() {
+				this.parentNode.remove();
+			}
+		</script>
+	</body>
+</html>
