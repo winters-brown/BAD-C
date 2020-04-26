@@ -7,7 +7,33 @@
 	</head>
 
 	<body>
-		<form action="/api/v1/debug/" method="POST">
+		<li id="behaviour_generator" hidden>
+			<label for="behaviour_prompt">Behaviour Prompt</label><br />
+			<input
+				type="text"
+				name="behaviour_prompt"
+				placeholder=""
+				id="behaviour_prompt"
+				required
+			/>
+			<br />
+			<label for="behaviour_question_type">Question Type</label>
+			<br />
+			<select
+				name="behaviour_question_type"
+				id="behaviour_question_type"
+				required
+			>
+				<option value="" selected disabled> </option>
+				<option value="counter">Counter</option>
+				<option value="true_or_false">True or False</option>
+			</select>
+			<button type="button" onclick="remove_behaviour(this)">
+				Remove Element
+			</button>
+		</li>
+
+		<form action="/api/v1/patients/new" method="POST">
 			<ul id="new_patient">
 				<li>
 					<label for="first_name">First Name</label><br />
@@ -27,33 +53,6 @@
 						required
 					/>
 				</li>
-				<li>
-					<div id="behaviour_generator">
-						<label for="behaviour_prompt">Behaviour Prompt</label
-						><br />
-						<input
-							type="text"
-							name="behaviour_prompt"
-							placeholder=""
-							id="behaviour_prompt"
-							required
-						/>
-						<br />
-						<label for="behaviour_question_type"
-							>Question Type</label
-						>
-						<br />
-						<select
-							name="behaviour_question_type"
-							id="behaviour_question_type"
-							required
-						>
-							<option value="" selected disabled> </option>
-							<option value="counter">Counter</option>
-							<option value="true_or_false">True or False</option>
-						</select>
-					</div>
-				</li>
 			</ul>
 			<button type="button" onclick="add_behaviour();">
 				Add Behaviour
@@ -63,41 +62,21 @@
 
 		<script>
 			function add_behaviour() {
-				document.getElementById("new_patient").innerHTML +=
-					' \
-                    <li> \
-                        <div id="behaviour_generator"> \
-                            <label for="behaviour_prompt">Behaviour Prompt</label \
-                            ><br /> \
-                            <input \
-                                type="text" \
-                                name="behaviour_prompt" \
-                                placeholder="" \
-                                id="behaviour_prompt" \
-                                required \
-                            /> \
-                            <br /> \
-                            <label for="behaviour_question_type" \
-                            >Question Type</label \
-                            > \
-                            <br /> \
-                            <select \
-                                name="behaviour_question_type" \
-                                id="behaviour_question_type" \
-                                required \
-                            > \
-                                <option value="" selected disabled> </option> \
-                                <option value="counter">Counter</option> \
-                                <option value="true_or_false">True or False</option> \
-                            </select> \
-                        </div > \
-                    </li> \
-                        ';
+				var behaviour_generator = document.getElementById(
+					"behaviour_generator"
+				);
+
+				var dupe = behaviour_generator.cloneNode(true);
+				dupe.hidden = false;
+
+				document.getElementById("new_patient").appendChild(dupe);
 			}
 
-			function remove_behaviour() {
-				this.parentNode.remove();
+			function remove_behaviour(element) {
+				element.parentNode.parentNode.removeChild(element.parentNode);
 			}
+
+			alert(document.cookie);
 		</script>
 	</body>
 </html>
