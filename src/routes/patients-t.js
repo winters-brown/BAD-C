@@ -56,7 +56,7 @@ router.post("/new", (req, res) => {
 			} else {
 				// Redirect user with some logic :P
 				if (results.admin == 1) {
-					res.send(req.body);
+					res.send(req.cookies);
 				} else {
 					// IF controller return controller dashboard
 					res.redirect("/api/v1/auth/login");
