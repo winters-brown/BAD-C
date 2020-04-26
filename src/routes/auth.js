@@ -1,112 +1,138 @@
 // Import Librarys
-const path = require('path');
-const express = require('express');
-const bcrypt = require('bcrypt');
-const uuid = require('uuid');
-
-var MongooseClient = require('mongoose');
-const users = require('../schema/users');
-
-// Rounds on password for bcrypt
-const saltRounds = 10;
-
-// Configure our Mongoose Client
-MongooseClient.connect('mongodb://localhost/bad-c', { useNewUrlParser: true, useUnifiedTopology: true });
+const express = require("express");
+const bcrypt = require("bcrypt");
+const path = require("path");
+const uuid = require("uuid");
 
 // Local Constants
+var MongooseClient = require("mongoose");
+const users = require("../schema/users");
+
+// Configure our Mongoose Client
+MongooseClient.connect("mongodb://localhost/bad-c", {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
+
+// Access our global router object.
 let router = express.Router();
 
-// Redirect to index page
-router.get('/login', (req, res) => {
-    // Search database for email
-    users.findOne({ _id: req.cookies.id, session_token: req.cookies.session_token }, (err, results) => {
-        // Handle any errors that might occure while reading databse.
-        if (err) return console.error(err);
-        // If we get no users under that email
-        if (!results) {
-            // This isnt a valid user, redirect to login.html
-            res.redirect('/login.html');
-        } else {
-            // Redirect user with some logic :P
-            if (results.admin == 1) {
-                // IF admin return admin dashboard
-                res.sendFile(path.join(__dirname, '../../private/admin/dashboard.html'));
-            } else {
-                // IF controller return controller dashboard
-                res.redirect('/api/v1/controller/dashboard');
-            }
-        }
-    });
+router.get("/login", (req, res) => {
+	// Store client cookies locally.
+	const kID = req.cookies.id;
+	const kSession_token = req.cookies.session_token;
+
+	// Build our query for later.
+	var query = {
+		_id: kID,
+		session_token: kSession_token,
+	};
+
+	// Verify query is not null
+	if (query._id == null && query.session_token == null) {
+		// User hasent logged in yet or users session_token is exprired.
+		res.redirect("/login.html");
+	} else {
+		// Search our database with query
+		users.findOne(query, (err, results) => {
+			// Handle any errors that might occure while reading databse.
+			if (err) return console.error(err);
+
+			// No user exists with that id and session_token.
+			if (!results) {
+				// TODO: Create custom error for login.html
+				res.redirect("/login.html");
+			} else {
+				// Check if our user is an admin.
+				if (results.admin == 1) {
+					// Redirect our admin to their dashboard
+					res.redirect("/api/v2/admin/");
+				} else {
+					// IF controller return controller dashboard
+					res.redirect("/api/v2/controller/");
+				}
+			}
+		});
+	}
 });
 
-// Verify user email and password match
-router.post('/login', (req, res) => {
-    // Capture Login Credentials
-    let client = {
-        email: req.body.email,
-        password: req.body.password
-    };
+router.post("/login", (req, res) => {
+	// Store user input locally.
+	const kEmail = req.body.email;
+	const kPassword = req.body.password;
 
-    // Search database for email
-    users.findOne({ email: req.body.email }, (err, results) => {
-        // Handle any errors that might occure while reading databse.
-        if (err) return console.error(err);
-        // If we get no users under that email
-        if (!results) {
-            // This isnt a valid user, redirect to login.html
-            res.redirect('/login.html');
-        } else {
-            // Now grab their password from the database and verify that the provided password is correct.
-            bcrypt.compare(req.body.password, results.password).then((correct_password) => {
-                // Password does not match hash in our database
-                if (!correct_password) {
-                    // This isnt a valid user, redirect to login.html
-                    res.redirect('/login.html');
-                } else {
-                    // Update browser cookies for 18 hours.
-                    // TEST
-                    results.session_token = uuid.v4();
-                    results.save();
+	// Build our query for later.
+	var query = {
+		email: kEmail,
+	};
 
-                    res.cookie("id", results._id, { maxAge: 2 * 24 * 3600000, httpOnly: true });
-                    res.cookie("session_token", results.session_token, { maxAge: 2 * 24 * 3600000, httpOnly: true });
+	// Search our database with our query
+	users.findOne(query, (err, results) => {
+		// Handle any errors that might occure while reading databse.
+		if (err) return console.error(err);
 
-                    // Redirect user with some logic :P
-                    if (results.admin == 1) {
-                        // IF admin return admin dashboard
-                        res.redirect('/api/v1/admin/dashboard');
-                    } else {
-                        // IF controller return controller dashboard
-                        res.redirect('/api/v1/controller/dashboard');
-                    }
-                }
-            });
-        }
-    });
+		// No user exists with that email.
+		if (!results) {
+			// TODO: Create custom error for login.html
+			res.redirect("/login.html");
+		} else {
+			// Compare passwords with bcrypt
+			bcrypt
+				.compare(kPassword, results.password)
+				.then((correct_password) => {
+					// Password does not match hash in our database
+					if (!correct_password) {
+						// The password was incorrect.
+						res.redirect("/login.html");
+					} else {
+						// Update browser cookies for 18 hours.
+						results.session_token = uuid.v4();
+						results.save();
+
+						res.cookie("id", results._id, {
+							maxAge: 2 * 24 * 3600000,
+							httpOnly: true,
+						});
+						res.cookie("session_token", results.session_token, {
+							maxAge: 2 * 24 * 3600000,
+							httpOnly: true,
+						});
+
+						if (results.admin) {
+							res.redirect("/api/v2/admin/");
+						} else {
+							res.redirect("/api/v2/controller/");
+						}
+					}
+				});
+		}
+	});
 });
 
-// Remove cookies and destroy session token stored.
-router.get('/logout', (req, res) => {
-    if (req.cookies.id == "j:null") {
-        res.sendFile(path.join(__dirname, '../../private/logout.html'));
-    } else {
-        // Search database for _id
-        users.findOne({ _id: req.cookies.id }, (err, results) => {
-            // Handle any errors that might occure while reading databse.
-            if (err) return console.error(err);
-            // If we get no users under that id
-            if (!results) {
-                res.sendFile(path.join(__dirname, '../../private/logout.html'));
-            } else {
-                results.session_token = "null";
-                results.save();
-                // Set cookies to be null. Protects clients personal identification information.
-                res.cookie("session_token", null, { maxAge: 900000, httpOnly: true });
+router.get("/logout", (req, res) => {
+	if (req.cookies.id == "j:null") {
+		res.sendFile(path.join(__dirname, "../../private/logout.html"));
+	} else {
+		// Search database for _id
+		users.findOne({ _id: req.cookies.id }, (err, results) => {
+			// Handle any errors that might occure while reading databse.
+			if (err) return console.error(err);
+			// If we get no users under that id
+			if (!results) {
+				res.sendFile(path.join(__dirname, "../../private/logout.html"));
+			} else {
+				results.session_token = "null";
+				results.save();
+				// Set cookies to be null. Protects clients personal identification information.
+				res.cookie("session_token", null, {
+					maxAge: 900000,
+					httpOnly: true,
+				});
 
-                res.sendFile(path.join(__dirname, '../../private/logout.html'));
-            }
-        });
-    }
+				res.sendFile(path.join(__dirname, "../../private/logout.html"));
+			}
+		});
+	}
 });
 
 // Export router contents
