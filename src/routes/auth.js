@@ -40,7 +40,6 @@ router.get("/login", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				// TODO: Create custom error for login.html
 				res.render("login", {
 					title: "BAD-C | Login",
 				});
@@ -75,7 +74,6 @@ router.post("/login", (req, res) => {
 
 		// No user exists with that email.
 		if (!results) {
-			// TODO: Create custom error for login.html
 			res.render("login", {
 				title: "BAD-C | Login",
 				error: "Could not log you in. Please try again!",
@@ -87,7 +85,6 @@ router.post("/login", (req, res) => {
 				.then((correct_password) => {
 					// Password does not match hash in our database
 					if (!correct_password) {
-						// TODO: Create custom error for login.html
 						res.render("login", {
 							title: "BAD-C | Login",
 							error: "Could not log you in. Please try again!",
