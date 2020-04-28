@@ -31,7 +31,7 @@ function template_authentication() {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -40,8 +40,7 @@ function template_authentication() {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
