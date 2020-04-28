@@ -1,21 +1,19 @@
 // Import Librarys
 const express = require("express");
 const bodyParser = require("body-parser");
-var cookieParser = require("cookie-parser");
-
-// Import Routes
-const user = require("./src/routes/users");
-const auth = require("./src/routes/auth");
-const admin = require("./src/routes/admin");
-const debug = require("./src/routes/debug");
-const patients = require("./src/routes/patients-t");
-const records = require("./src/routes/records");
-const controller = require("./src/routes/controller");
-const departments = require("./src/routes/departments");
+const cookieParser = require("cookie-parser");
+const express = require("express");
+const exphbs = require("express-handlebars");
 
 // Local Constants
 const app = express();
 const port = 8080;
+
+// Import Routes
+const auth = require("./src/routes/auth");
+const admin = require("./src/routes/admin");
+const controller = require("./src/routes/controller");
+const department = require("./src/routes/department");
 
 // Enforce Middleware
 // Parse application/x-www-form-urlencoded
@@ -24,16 +22,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 // parse application/json
 app.use(bodyParser.json());
+// Begin using handelbars engine
+app.engine("handlebars", exphbs());
+// Implement our view engine
+app.set("view engine", "handlebars");
 
 // Initialize and Apply Routes for API
-app.use("/api/v1/users/", user);
-app.use("/api/v1/auth/", auth);
-app.use("/api/v1/admin/", admin);
-app.use("/api/v1/debug/", debug);
-app.use("/api/v1/patients/", patients);
-app.use("/api/v1/records/", records);
-app.use("/api/v1/controller/", controller);
-app.use("/api/v1/dept/", departments);
+app.use("/api/v2/auth/", auth);
+app.use("/api/v2/admin/", admin);
+app.use("/api/v2/controller/", controller);
+app.use("/api/v2/department/", department);
 
 // Serve Static Files
 app.use("/", express.static("public"));

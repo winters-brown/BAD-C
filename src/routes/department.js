@@ -1,10 +1,10 @@
 // Import Librarys
 const express = require("express");
-const bcrypt = require("bcrypt");
 const path = require("path");
 
 // Local Constants
 var MongooseClient = require("mongoose");
+const document = require("../schema/departments");
 const users = require("../schema/users");
 
 // Configure our Mongoose Client
@@ -15,50 +15,6 @@ MongooseClient.connect("mongodb://localhost/bad-c", {
 
 // Access our global router object.
 let router = express.Router();
-
-router.get("/", (req, res) => {
-	// Store client cookies locally.
-	const kID = req.cookies.id;
-	const kSession_token = req.cookies.session_token;
-
-	// Build our query for later.
-	var query = {
-		_id: kID,
-		session_token: kSession_token,
-	};
-
-	// Verify query is not null
-	if (query._id == null && query.session_token == null) {
-		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
-	} else {
-		// Search our database with query
-		users.findOne(query, (err, results) => {
-			// Handle any errors that might occure while reading databse.
-			if (err) return console.error(err);
-
-			// No user exists with that id and session_token.
-			if (!results) {
-				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
-			} else {
-				// Check if our user is an admin.
-				if (results.admin == 1) {
-					// Redirect our admin to their dashboard
-					res.sendFile(
-						path.join(
-							__dirname,
-							"../../private/admin/dashboard.html"
-						)
-					);
-				} else {
-					// IF controller return controller dashboard
-					res.redirect("/api/v2/controller/");
-				}
-			}
-		});
-	}
-});
 
 router.get("/create", (req, res) => {
 	// Store client cookies locally.
@@ -89,7 +45,10 @@ router.get("/create", (req, res) => {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
 					res.sendFile(
-						path.join(__dirname, "../../private/admin/user.html")
+						path.join(
+							__dirname,
+							"../../private/admin/department/new.html"
+						)
 					);
 				} else {
 					// IF controller return controller dashboard
@@ -128,44 +87,138 @@ router.post("/create", (req, res) => {
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
-					users.findOne({ email: req.body.email }, (err, results) => {
-						// Handle any errors that might occure while reading databse.
+					const kName = req.body.name;
+
+					var query = {
+						name: kName,
+					};
+
+					document.findOne(query, (err, result) => {
+						// Handle any errors that might occure while reading database.
 						if (err) return console.error(err);
 
-						// No user exists with that email.
-						if (!results) {
-							bcrypt.hash(req.body.password, 10, function (
-								err,
-								hash
-							) {
-								var query = new users({
-									// Personal information
-									first_name: req.body.first_name,
-									last_name: req.body.last_name,
-									// Login Information
-									email: req.body.email,
-									// TODO: NOOOOOO Curses, I have to encrypt this...
-									password: hash,
-									// Does user have admin privelages
-									admin: req.body.admin,
-									// Department that user belongs to.
-									// TODO: Should this be an array given that one user could manage multiple departments???
-									department: req.body.department,
-									// Approved login session token
-									session_token: "null",
-								});
+						if (!result) {
+							var new_department = new document(query);
+							new_department.save();
 
-								query.save();
-							});
-
-							// TODO: Redirect with a notification
-							res.redirect("/api/v2/admin/");
+							res.json(new_department);
 						} else {
-							console.log("error");
+							res.redirect("/api/v2/department/update");
 						}
 					});
 				} else {
-					// If controller return controller dashboard
+					// IF controller return controller dashboard
+					res.redirect("/api/v2/controller/");
+				}
+			}
+		});
+	}
+});
+
+router.get("/read", (req, res) => {
+	// Store client cookies locally.
+	const kID = req.cookies.id;
+	const kSession_token = req.cookies.session_token;
+
+	// Build our query for later.
+	var query = {
+		_id: kID,
+		session_token: kSession_token,
+	};
+
+	// Verify query is not null
+	if (query._id == null && query.session_token == null) {
+		// User hasent logged in yet or users session_token is exprired.
+		res.redirect("/login.html");
+	} else {
+		// Search our database with query
+		users.findOne(query, (err, results) => {
+			// Handle any errors that might occure while reading databse.
+			if (err) return console.error(err);
+
+			// No user exists with that id and session_token.
+			if (!results) {
+				// TODO: Create custom error for login.html
+				res.redirect("/login.html");
+			} else {
+				document.find((err, result) => {
+					res.json(result);
+				});
+			}
+		});
+	}
+});
+
+router.get("/read/:id", (req, res) => {
+	// Store client cookies locally.
+	const kID = req.cookies.id;
+	const kSession_token = req.cookies.session_token;
+
+	// Build our query for later.
+	var query = {
+		_id: kID,
+		session_token: kSession_token,
+	};
+
+	// Verify query is not null
+	if (query._id == null && query.session_token == null) {
+		// User hasent logged in yet or users session_token is exprired.
+		res.redirect("/login.html");
+	} else {
+		// Search our database with query
+		users.findOne(query, (err, results) => {
+			// Handle any errors that might occure while reading databse.
+			if (err) return console.error(err);
+
+			// No user exists with that id and session_token.
+			if (!results) {
+				// TODO: Create custom error for login.html
+				res.redirect("/login.html");
+			} else {
+				document.find({ _id: req.params.id }, (err, result) => {
+					res.json(result);
+				});
+			}
+		});
+	}
+});
+
+router.get("/update", (req, res) => {
+	// Store client cookies locally.
+	const kID = req.cookies.id;
+	const kSession_token = req.cookies.session_token;
+
+	// Build our query for later.
+	var query = {
+		_id: kID,
+		session_token: kSession_token,
+	};
+
+	// Verify query is not null
+	if (query._id == null && query.session_token == null) {
+		// User hasent logged in yet or users session_token is exprired.
+		res.redirect("/login.html");
+	} else {
+		// Search our database with query
+		users.findOne(query, (err, results) => {
+			// Handle any errors that might occure while reading databse.
+			if (err) return console.error(err);
+
+			// No user exists with that id and session_token.
+			if (!results) {
+				// TODO: Create custom error for login.html
+				res.redirect("/login.html");
+			} else {
+				// Check if our user is an admin.
+				if (results.admin == 1) {
+					res.sendFile(
+						path.join(
+							__dirname,
+							"../../private/admin/department/manage.html"
+						)
+					);
+				} else {
+					// IF controller return controller dashboard
 					res.redirect("/api/v2/controller/");
 				}
 			}

@@ -1,32 +1,62 @@
 // Import Librarys
-const express = require('express');
-const path = require('path');
-
-var MongooseClient = require('mongoose');
-const users = require('../schema/users');
-
-// Rounds on password for bcrypt
-const saltRounds = 10;
-
-// Configure our Mongoose Client
-MongooseClient.connect('mongodb://localhost/bad-c', { useNewUrlParser: true, useUnifiedTopology: true });
+const express = require("express");
+const path = require("path");
 
 // Local Constants
+var MongooseClient = require("mongoose");
+const users = require("../schema/users");
+
+// Configure our Mongoose Client
+MongooseClient.connect("mongodb://localhost/bad-c", {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
+
+// Access our global router object.
 let router = express.Router();
 
-router.get('/dashboard', (req, res) => {
-    // Search database for email
-    users.findOne({ _id: req.cookies.id, session_token: req.cookies.session_token }, (err, results) => {
-        // Handle any errors that might occure while reading databse.
-        if (err) return console.error(err);
-        // If we get no users under that email
-        if (!results) {
-            // This isnt a valid user, redirect to login.html
-            res.redirect('/');
-        } else {
-            res.sendFile(path.join(__dirname, '../../private/controller/dashboard.html'));
-        }
-    });
+router.get("/", (req, res) => {
+	// Store client cookies locally.
+	const kID = req.cookies.id;
+	const kSession_token = req.cookies.session_token;
+
+	// Build our query for later.
+	var query = {
+		_id: kID,
+		session_token: kSession_token,
+	};
+
+	// Verify query is not null
+	if (query._id == null && query.session_token == null) {
+		// User hasent logged in yet or users session_token is exprired.
+		res.redirect("/login.html");
+	} else {
+		// Search our database with query
+		users.findOne(query, (err, results) => {
+			// Handle any errors that might occure while reading databse.
+			if (err) return console.error(err);
+
+			// No user exists with that id and session_token.
+			if (!results) {
+				// TODO: Create custom error for login.html
+				res.redirect("/login.html");
+			} else {
+				// Check if our user is an admin.
+				if (results.admin == 1) {
+					// Redirect our admin to their dashboard
+					res.redirect("/api/v2/admin/");
+				} else {
+					// If controller return controller dashboard
+					res.sendFile(
+						path.join(
+							__dirname,
+							"../../private/controller/dashboard.html"
+						)
+					);
+				}
+			}
+		});
+	}
 });
 
 // Export router contents
