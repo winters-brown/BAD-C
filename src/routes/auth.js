@@ -31,7 +31,7 @@ router.get("/login", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
+		res.render("login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -41,7 +41,9 @@ router.get("/login", (req, res) => {
 			// No user exists with that id and session_token.
 			if (!results) {
 				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
+				res.render("login", {
+					title: "BAD-C | Login",
+				});
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
@@ -74,7 +76,10 @@ router.post("/login", (req, res) => {
 		// No user exists with that email.
 		if (!results) {
 			// TODO: Create custom error for login.html
-			res.redirect("/login.html");
+			res.render("login", {
+				title: "BAD-C | Login",
+				error: "Could not log you in. Please try again!",
+			});
 		} else {
 			// Compare passwords with bcrypt
 			bcrypt
@@ -82,8 +87,11 @@ router.post("/login", (req, res) => {
 				.then((correct_password) => {
 					// Password does not match hash in our database
 					if (!correct_password) {
-						// The password was incorrect.
-						res.redirect("/login.html");
+						// TODO: Create custom error for login.html
+						res.render("login", {
+							title: "BAD-C | Login",
+							error: "Could not log you in. Please try again!",
+						});
 					} else {
 						// Update browser cookies for 18 hours.
 						results.session_token = uuid.v4();
@@ -98,7 +106,7 @@ router.post("/login", (req, res) => {
 							httpOnly: true,
 						});
 
-						if (results.admin) {
+						if (results.admin == 1) {
 							res.redirect("/api/v2/admin/");
 						} else {
 							res.redirect("/api/v2/controller/");
@@ -111,7 +119,7 @@ router.post("/login", (req, res) => {
 
 router.get("/logout", (req, res) => {
 	if (req.cookies.id == "j:null") {
-		res.sendFile(path.join(__dirname, "../../private/logout.html"));
+		res.render("logout", { title: "BAD-C | Logout" });
 	} else {
 		// Search database for _id
 		users.findOne({ _id: req.cookies.id }, (err, results) => {
@@ -119,7 +127,7 @@ router.get("/logout", (req, res) => {
 			if (err) return console.error(err);
 			// If we get no users under that id
 			if (!results) {
-				res.sendFile(path.join(__dirname, "../../private/logout.html"));
+				res.render("logout", { title: "BAD-C | Logout" });
 			} else {
 				results.session_token = "null";
 				results.save();
@@ -129,7 +137,7 @@ router.get("/logout", (req, res) => {
 					httpOnly: true,
 				});
 
-				res.sendFile(path.join(__dirname, "../../private/logout.html"));
+				res.render("logout", { title: "BAD-C | Logout" });
 			}
 		});
 	}
