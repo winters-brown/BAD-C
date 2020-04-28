@@ -12,7 +12,7 @@ const port = 8080;
 const auth = require("./src/routes/auth");
 const admin = require("./src/routes/admin");
 const controller = require("./src/routes/controller");
-// const department = require("./src/routes/department");
+const department = require("./src/routes/department");
 
 // Enforce Middleware
 // Parse application/x-www-form-urlencoded
@@ -30,7 +30,7 @@ app.set("view engine", "handlebars");
 app.use("/api/v2/auth/", auth);
 app.use("/api/v2/admin/", admin);
 app.use("/api/v2/controller/", controller);
-// app.use("/api/v2/department/", department);
+app.use("/api/v2/department/", department);
 
 // Serve Static Files
 // app.use("/", app.render("index"));
