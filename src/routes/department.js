@@ -30,7 +30,7 @@ router.get("/create", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -39,17 +39,11 @@ router.get("/create", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
-					res.sendFile(
-						path.join(
-							__dirname,
-							"../../private/admin/department/new.html"
-						)
-					);
+					res.render("admin/department/create");
 				} else {
 					// IF controller return controller dashboard
 					res.redirect("/api/v2/controller/");
@@ -73,7 +67,7 @@ router.post("/create", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -82,8 +76,7 @@ router.post("/create", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
@@ -129,7 +122,7 @@ router.get("/read", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -139,7 +132,7 @@ router.get("/read", (req, res) => {
 			// No user exists with that id and session_token.
 			if (!results) {
 				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				document.find((err, result) => {
 					res.json(result);
@@ -163,7 +156,7 @@ router.get("/read/:id", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -172,8 +165,7 @@ router.get("/read/:id", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				document.find({ _id: req.params.id }, (err, result) => {
 					res.json(result);
@@ -197,7 +189,7 @@ router.get("/update", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -206,17 +198,11 @@ router.get("/update", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
-					res.sendFile(
-						path.join(
-							__dirname,
-							"../../private/admin/department/manage.html"
-						)
-					);
+					res.render("admin/department/update");
 				} else {
 					// IF controller return controller dashboard
 					res.redirect("/api/v2/controller/");
@@ -224,6 +210,16 @@ router.get("/update", (req, res) => {
 			}
 		});
 	}
+});
+
+router.get("/delete", (req, res) => {
+	// TODO: Complete this.
+	res.send("GET /delete");
+});
+
+router.post("/delete/:id", (req, res) => {
+	// TODO: Complete this.
+	res.send("GET /delete/:id");
 });
 
 // Export router contents
