@@ -31,7 +31,7 @@ router.get("/login", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.render("login");
+		res.render("login", { title: "BAD-C | Login" });
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {

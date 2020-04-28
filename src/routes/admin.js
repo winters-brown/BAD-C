@@ -44,7 +44,9 @@ router.get("/", (req, res) => {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
 					// Redirect our admin to their dashboard
-					res.render("admin/dashboard");
+					res.render("admin/dashboard", {
+						title: "BAD-C | Admin Dasbhoard",
+					});
 				} else {
 					// IF controller return controller dashboard
 					res.redirect("/api/v2/controller/");
@@ -81,7 +83,9 @@ router.get("/create", (req, res) => {
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
-					res.render("admin/users/new");
+					res.render("admin/users/new", {
+						title: "BAD-C | New User",
+					});
 				} else {
 					// IF controller return controller dashboard
 					res.redirect("/api/v2/controller/");
@@ -191,7 +195,9 @@ router.get("/update", (req, res) => {
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
-					res.render("admin/users/update");
+					res.render("admin/users/update", {
+						title: "BAD-C | Update Users",
+					});
 				} else {
 					// IF controller return controller dashboard
 					res.redirect("/api/v2/controller/");
