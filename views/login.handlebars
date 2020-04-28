@@ -1,5 +1,14 @@
 <form action="/api/v2/auth/login" method="POST">
     <ul>
+        {{#if error}}
+        <li>
+            <div>
+                {{!-- Danger Alert --}}
+                <h3>Error</h3>
+                <p>{{error}}</p>
+            </div>
+        </li>
+        {{/if}}
         <li>
             <label for="email">Email</label><br />
             <input type="email" name="email" id="email" />
