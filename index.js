@@ -11,7 +11,7 @@ const port = 8080;
 // Import Routes
 const auth = require("./src/routes/auth");
 const admin = require("./src/routes/admin");
-// const controller = require("./src/routes/controller");
+const controller = require("./src/routes/controller");
 // const department = require("./src/routes/department");
 
 // Enforce Middleware
@@ -29,7 +29,7 @@ app.set("view engine", "handlebars");
 // Initialize and Apply Routes for API
 app.use("/api/v2/auth/", auth);
 app.use("/api/v2/admin/", admin);
-// app.use("/api/v2/controller/", controller);
+app.use("/api/v2/controller/", controller);
 // app.use("/api/v2/department/", department);
 
 // Serve Static Files

@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -38,21 +38,16 @@ router.get("/", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				// TODO: Create custom error for login.html
-				res.redirect("/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
 					// Redirect our admin to their dashboard
 					res.redirect("/api/v2/admin/");
 				} else {
-					// If controller return controller dashboard
-					res.sendFile(
-						path.join(
-							__dirname,
-							"../../private/controller/dashboard.html"
-						)
-					);
+					res.render("controller/dashboard", {
+						title: "BAD-C | Controller Dashboard",
+					});
 				}
 			}
 		});
