@@ -2,7 +2,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const express = require("express");
 const exphbs = require("express-handlebars");
 
 // Local Constants
@@ -11,9 +10,9 @@ const port = 8080;
 
 // Import Routes
 const auth = require("./src/routes/auth");
-const admin = require("./src/routes/admin");
-const controller = require("./src/routes/controller");
-const department = require("./src/routes/department");
+// const admin = require("./src/routes/admin");
+// const controller = require("./src/routes/controller");
+// const department = require("./src/routes/department");
 
 // Enforce Middleware
 // Parse application/x-www-form-urlencoded
@@ -29,12 +28,12 @@ app.set("view engine", "handlebars");
 
 // Initialize and Apply Routes for API
 app.use("/api/v2/auth/", auth);
-app.use("/api/v2/admin/", admin);
-app.use("/api/v2/controller/", controller);
-app.use("/api/v2/department/", department);
+// app.use("/api/v2/admin/", admin);
+// app.use("/api/v2/controller/", controller);
+// app.use("/api/v2/department/", department);
 
 // Serve Static Files
-app.use("/", express.static("public"));
+// app.use("/", app.render("index"));
 
 // TODO: Do better here lol.
 app.listen(port, () => console.log(`Server Listening on ${port}!`));
