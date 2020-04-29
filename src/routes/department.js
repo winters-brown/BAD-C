@@ -94,9 +94,13 @@ router.post("/create", (req, res) => {
 							var new_department = new document(query);
 							new_department.save();
 
-							res.json(new_department);
+							res.render("admin/department/update", {
+								success: "Department created!",
+							});
 						} else {
-							res.redirect("/api/v2/department/update");
+							res.render("admin/department/update", {
+								error: "Department already exists!",
+							});
 						}
 					});
 				} else {
@@ -202,7 +206,12 @@ router.get("/update", (req, res) => {
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
-					res.render("admin/department/update");
+					document.find((err, results) => {
+						res.render("admin/department/update", {
+							error: err,
+							departments: [results],
+						});
+					});
 				} else {
 					// IF controller return controller dashboard
 					res.redirect("/api/v2/controller/");

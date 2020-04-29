@@ -1,4 +1,25 @@
 <h1>Department Manager</h1>
+{{#if error}}
+<li>
+    <div>
+        {{!-- Danger Alert --}}
+        <h3>Error</h3>
+        <p>{{error}}</p>
+    </div>
+</li>
+{{/if}}
+
+{{#if success}}
+<li>
+    <div>
+        {{!-- Success Alert --}}
+        <h3>Success</h3>
+        <p>{{success}}</p>
+    </div>
+</li>
+{{/if}}
+
+
 <form action="/api/v2/department/update" method="POST">
     <ul>
         <li><a href="/api/v2/department/create">New Department</a></li>
