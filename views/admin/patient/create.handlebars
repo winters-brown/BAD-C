@@ -14,7 +14,7 @@
     </button>
 </li>
 
-<form action="/api/v1/patients/new" method="POST">
+<form action="/api/v2/patient/create" method="POST">
     <ul id="new_patient">
         <li>
             <label for="first_name">First Name</label><br />
@@ -23,6 +23,15 @@
         <li>
             <label for="last_name">Last Name</label><br />
             <input type="text" name="last_name" id="last_name" required />
+        </li>
+        <li>
+            <label for="department">Department</label><br />
+            <select name="department" id="department">
+                {{#my_departments}}
+                <option name={{name}} value={{name}} id={{_id}}>{{name}}</option>
+                {{/my_departments}}
+            </select>
+
         </li>
     </ul>
     <button type="button" onclick="add_behaviour();">
@@ -46,6 +55,4 @@
     function remove_behaviour(element) {
         element.parentNode.parentNode.removeChild(element.parentNode);
     }
-
-    alert(document.cookie);
 </script>
