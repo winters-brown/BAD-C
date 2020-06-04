@@ -1,0 +1,52 @@
+<h1>Delete Departments</h1>
+{{#if error}}
+<li>
+    <div>
+        {{!-- Danger Alert --}}
+        <h3>Error</h3>
+        <p>{{error}}</p>
+    </div>
+</li>
+{{/if}}
+
+{{#if success}}
+<li>
+    <div>
+        {{!-- Success Alert --}}
+        <h3>Success</h3>
+        <p>{{success}}</p>
+    </div>
+</li>
+{{/if}}
+
+
+<form action="/api/v2/department/update" method="POST">
+    <ul>
+        <li><a href="/api/v2/department/create">New Department</a></li>
+        <li><a href="/api/v2/department/update">Update Department</a></li>
+        <li>
+            <h1>Warning</h1>
+        </li>
+        <li>
+            <p>If you remove a department here, you will not be able to access any patients as a controller and an admin
+                will have to re associate the patients with a new department.</p>
+        </li>
+        {{#my_departments}}
+        <li>
+            <label for="name"></label>
+            <input type="text" name="{{name}}" id={{_id}} value="{{name}}" disabled>
+            <span onclick="remove(this);">Delete</span>
+        </li>
+        {{/my_departments}}
+    </ul>
+</form>
+
+<script>
+    function remove(element) {
+        if (confirm("Are you sure you want to remove this department?")) {
+            document.location.href =
+                "/api/v2/department/delete/" +
+                element.parentElement.children[1].id;
+        }
+    }
+</script>
