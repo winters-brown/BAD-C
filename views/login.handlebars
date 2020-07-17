@@ -11,8 +11,7 @@
                     <form action="/api/v2/auth/login" method="POST">
                         {{#if error}}
                         <div class="alert alert-danger" role="alert">
-                            <h3>Error</h3>
-                            <p>{{error}}</p>
+                            {{error}}
                         </div>
                         {{/if}}
 
