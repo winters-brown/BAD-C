@@ -1,1 +1,69 @@
-<h1>Patient Update Page</h1>
+<div class="card">
+    <div class="card-header">
+        Update Patient
+    </div>
+    <div class="card-body">
+        {{#if error}}
+        <div class="alert alert-danger" role="alert">
+            <h3>Error</h3>
+            <p>{{error}}</p>
+        </div>
+        {{/if}}
+
+        {{#if success}}
+        <div class="alert alert-success" role="alert">
+            <h3>Success</h3>
+            <p>{{success}}</p>
+        </div>
+        {{/if}}
+
+        {{#if my_patients}}
+        <div>
+            <h3>Select a patient</h3>
+            <div class="mb-3">
+                <select class="custom-select" required>
+                    <option value="" disabled></option>
+                    {{#my_patients}}
+                    <option id="{{_id}}" value="{{_id}}">{{department}} || {{first_name}} {{last_name}}</option>
+                    {{/my_patients}}
+                </select>
+                <button onclick="parse(this);" class="btn btn-warning">Update</button>
+            </div>
+
+        </div>
+        {{/if}}
+
+    </div>
+</div>
+
+<script>
+    function edit(element) {
+        if (element.innerHTML == "Save") {
+            element.parentElement.children[1].disabled = true;
+            element.innerHTML = "Edit";
+            const new_id = element.parentElement.children[1].id;
+            const new_value = element.parentElement.children[1].value;
+            document.location.href =
+                "/api/v2/department/update/" +
+                new_id.toString() +
+                "/" +
+                new_value.toString();
+            // TODO: Somehow submit this to the server as a change.....
+        } else {
+            element.parentElement.children[1].disabled = false;
+            element.innerHTML = "Save";
+        }
+    }
+
+    function parse(element) {
+        console.log(element.parentElement.children.id);
+    }
+</script>
+
+<style>
+    body {
+        margin: auto;
+        width: 70%;
+        padding: 10px;
+    }
+</style>
