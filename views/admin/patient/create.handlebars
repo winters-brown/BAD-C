@@ -1,44 +1,62 @@
-<li id="behaviour_generator" hidden>
+<div id="behaviour_generator" class="form-group" hidden>
     <label for="behaviour_prompt">Behaviour Prompt</label><br />
-    <input type="text" name="behaviour_prompt" placeholder="" id="behaviour_prompt" required />
-    <br />
-    <label for="behaviour_question_type">Question Type</label>
-    <br />
-    <select name="behaviour_question_type" id="behaviour_question_type" required>
+    <input type="text" name="behaviour_prompt" placeholder="" id="behaviour_prompt" class="form-control" required />
+
+    <label for="behaviour_question_type">Question Type</label><br />
+    <select name="behaviour_question_type" id="behaviour_question_type" class="form-control mb-2" required>
         <option value="" selected disabled> </option>
         <option value="counter">Counter</option>
         <option value="true_or_false">True or False</option>
     </select>
-    <button type="button" onclick="remove_behaviour(this)">
+    <button type="button" onclick="remove_behaviour(this)" class="btn btn-danger mb-2">
         Remove Element
     </button>
-</li>
 
-<form action="/api/v2/patient/create" method="POST">
-    <ul id="new_patient">
-        <li>
-            <label for="first_name">First Name</label><br />
-            <input type="text" name="first_name" id="first_name" required />
-        </li>
-        <li>
-            <label for="last_name">Last Name</label><br />
-            <input type="text" name="last_name" id="last_name" required />
-        </li>
-        <li>
-            <label for="department">Department</label><br />
-            <select name="department" id="department">
-                {{#my_departments}}
-                <option name={{name}} value={{name}} id={{_id}}>{{name}}</option>
-                {{/my_departments}}
-            </select>
+    <br />
+    <br />
+</div>
 
-        </li>
-    </ul>
-    <button type="button" onclick="add_behaviour();">
-        Add Behaviour
-    </button>
-    <button type="submit">Submit</button>
-</form>
+<div class="card">
+    <div class="card-header">
+        New Patient
+    </div>
+    <div class="card-body">
+        <form action="/api/v2/patient/create" method="POST">
+            <div class="form-group">
+                <label for="first_name">First Name</label><br />
+                <input type="text" name="first_name" id="first_name" class="form-control" required />
+            </div>
+            <div>
+                <label for="last_name">Last Name</label><br />
+                <input type="text" name="last_name" id="last_name" class="form-control" required />
+            </div>
+            <div>
+                <label for="department">Department</label><br />
+                <select name="department" id="department" class="form-control">
+                    <option value="" selected disabled></option>
+                    {{#my_departments}}
+                    <option name={{name}} value={{name}} id={{_id}}>{{name}}</option>
+                    {{/my_departments}}
+                </select>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <div id="new_patient">
+                <h3>Behaviours</h3>
+            </div>
+            <div>
+                <button type="button" onclick="add_behaviour();" class="btn btn-success">
+                    Add Behaviour
+                </button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
 
 <script>
     function add_behaviour() {
@@ -56,3 +74,11 @@
         element.parentNode.parentNode.removeChild(element.parentNode);
     }
 </script>
+
+<style>
+    body {
+        margin: auto;
+        width: 70%;
+        padding: 10px;
+    }
+</style>

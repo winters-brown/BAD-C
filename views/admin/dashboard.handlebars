@@ -1,23 +1,81 @@
-<h1>Admin Dashboard</h1>
-<ul>
-    <li>
-        <a href="/api/v2/patient/create">New Patient</a>
-        <br />
-        <a href="/api/v2/patient/update">Manage Patients</a>
-    </li>
-    <li>
-        <a href="/api/v2/department/create">New Department</a>
-        <br />
-        <a href="/api/v2/department/update">Manage Departments</a>
-    </li>
-    <li>
-        <a href="/api/v2/admin/create">New Controller/Admin</a>
-        <br />
-        <a href="/api/v2/admin/update">Manage Controller's/Admin</a>
-    </li>
-    <li>
-        <a href="/api/v2/record/create">Create Record for patient</a>
-        <br />
-        <a href="/api/v2/record/update">Manage Records for patient</a>
-    </li>
-</ul>
+<div class="card">
+    <div class="card-header">
+        Admin Dashboard
+    </div>
+    <div class="row row-cols-1 row-cols-md-2" style="padding: 10px;">
+        <div class="col mb-2">
+            <div class="card">
+                <div class="card-header">
+                    Records
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <button type="button" class="btn btn-secondary">Create Record</button>
+                    </ul>
+                    <ul>
+                        <button type="button" class="btn btn-secondary">Manage Records</button>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-2">
+            <div class="card">
+                <div class="card-header">
+                    Departments
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <a href="/api/v2/department/create" class="btn btn-warning">Create Department</a>
+                    </ul>
+                    <ul>
+                        <a href="/api/v2/department/update" class="btn btn-warning">Update Departments</a>
+                    </ul>
+                    <ul>
+                        <a href="/api/v2/department/delete" class="btn btn-warning">Delete Departments</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-2">
+            <div class="card">
+                <div class="card-header">
+                    Patients
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <a href="/api/v2/patient/create" class="btn btn-warning">Create Patient</a>
+                    </ul>
+                    <ul>
+                        <a href="/api/v2/patient/update" class="btn btn-warning">Manage Patient</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-2">
+            <div class="card">
+                <div class="card-header">
+                    Users
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <button type="button" class="btn btn-secondary">Create User</button>
+                    </ul>
+                    <ul>
+                        <button type="button" class="btn btn-secondary">Manage User</button>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        margin: auto;
+        width: 70%;
+        padding: 10px;
+    }
+</style>
