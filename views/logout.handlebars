@@ -1,20 +1,32 @@
-<ul>
-    <h1> You are now logged out!</h1>
-
-    {{#if error}}
-    <li>
-        <div>
-            {{!-- Danger Alert --}}
-            <h3>Error</h3>
-            <p>{{error}}</p>
+<div clas="container-md">
+    <div class="row">
+        <div class="col-sm">
         </div>
-    </li>
-    {{/if}}
-
-    <li>
-        <a href="/">Home?</a>
-    </li>
-    <li>
-        <a href="/api/v2/auth/login">Login?</a>
-    </li>
-</ul>
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+                    See you soon 👋
+                </div>
+                <div class="card-body">
+                    {{#if error}}
+                    <li>
+                        <div>
+                            {{!-- Danger Alert --}}
+                            <h3>Error</h3>
+                            <p>{{error}}</p>
+                        </div>
+                    </li>
+                    {{/if}}
+                    <div class="alert alert-success" role="alert">
+                        You are now logged out!
+                    </div>
+                    <p>
+                        You can log back in <a href="/api/v2/auth/login">here</a> or just close out of the tab.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+        </div>
+    </div>
+</div>
