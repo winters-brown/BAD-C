@@ -30,7 +30,7 @@ router.get("/", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/api/v2/auth/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -39,7 +39,7 @@ router.get("/", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				res.redirect("/api/v2/auth/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
@@ -70,7 +70,7 @@ router.get("/create", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/api/v2/auth/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -79,7 +79,7 @@ router.get("/create", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				res.redirect("/api/v2/auth/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
@@ -109,7 +109,7 @@ router.post("/create", (req, res) => {
 	// Verify query is not null
 	if (query._id == null && query.session_token == null) {
 		// User hasent logged in yet or users session_token is exprired.
-		res.redirect("/api/v2/auth/login.html");
+		res.redirect("/api/v2/auth/login");
 	} else {
 		// Search our database with query
 		users.findOne(query, (err, results) => {
@@ -118,7 +118,7 @@ router.post("/create", (req, res) => {
 
 			// No user exists with that id and session_token.
 			if (!results) {
-				res.redirect("/api/v2/auth/login.html");
+				res.redirect("/api/v2/auth/login");
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
