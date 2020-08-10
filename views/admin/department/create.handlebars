@@ -1,35 +1,67 @@
-<h1>New Department</h1>
-{{#if error}}
-<li>
-    <div>
-        {{!-- Danger Alert --}}
-        <h3>Error</h3>
-        <p>{{error}}</p>
+<div class="card dashboard">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="/api/v2/department/create">New</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/department/update">Update</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/department/delete">Delete</a>
+            </li>
+        </ul>
     </div>
-</li>
-{{/if}}
+    <div class="card-body">
+        {{#if error}}
+        <div>
+            <div class="alert alert-danger" role="alert">
+                <p>{{error}}</p>
+            </div>
+        </div>
+        {{/if}}
+        {{#if success}}
+        <div>
+            <div class="alert alert-success" role="alert">
+                <p>{{success}}</p>
+            </div>
+        </div>
+        {{/if}}
 
-{{#if success}}
-<li>
-    <div>
-        {{!-- Success Alert --}}
-        <h3>Success</h3>
-        <p>{{success}}</p>
+        <div class="alert alert-info">
+            <h3>New Deparments</h3>
+            Be mindful of creating new departments. Every department generated has a specific ID and deleting these
+            departmnets will permanently damage the database and its associations.
+        </div>
+
+        <form action="/api/v2/department/create" method="POST">
+            <div class="form-row">
+                <div class="col-9">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Department Name"
+                        required />
+                </div>
+                <div class="col">
+                    <button type="submit" class="form-control btn-primary col">Submit</button>
+                </div>
+            </div>
+        </form>
+
     </div>
-</li>
-{{/if}}
+</div>
 
-<form action="/api/v2/department/create" method="POST">
-    <ul>
-        <li><a href="/api/v2/deparrtment/create">New Department </a></li>
-        <li><a href="/api/v2/department/update">Update Departments</a></li>
-        <li><a href="/api/v2/department/delete">Delete Departments</a></li>
-        <li>
-            <label for="name">Department Name</label>
-            <input type="text" name="name" id="name" required />
-        </li>
-        <li>
-            <button type="submit">Submit</button>
-        </li>
-    </ul>
-</form>
+
+<style>
+    .dashboard {
+        margin: auto;
+        padding: 0px;
+        width: 70%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .dashboard {
+            width: 100%;
+            margin: auto;
+            padding: 0px;
+        }
+    }
+</style>

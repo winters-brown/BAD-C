@@ -1,55 +1,105 @@
-<h1>Department Manager</h1>
-{{#if error}}
-<li>
-    <div>
-        {{!-- Danger Alert --}}
-        <h3>Error</h3>
-        <p>{{error}}</p>
+<div class="card dashboard">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/department/create">New</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/api/v2/department/update">Update</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/department/delete">Delete</a>
+            </li>
+        </ul>
     </div>
-</li>
-{{/if}}
+    <div class="card-body">
+        {{#if error}}
+        <div>
+            <div class="alert alert-danger" role="alert">
+                <p>{{error}}</p>
+            </div>
+        </div>
+        {{/if}}
+        {{#if success}}
+        <div>
+            <div class="alert alert-success" role="alert">
+                <p>{{success}}</p>
+            </div>
+        </div>
+        {{/if}}
+        <form action="/api/v2/department/update" method="POST">
+            {{#my_departments}}
+            <div class="form-row">
+                <div class="col-10">
+                    <input type="text" name="{{name}}" id={{_id}} value="{{name}}" class="form-control" disabled>
+                </div>
+                <div class="col">
+                    <span onclick="edit(this);" class="form-control text-center btn-warning">Edit</span>
+                    </br>
+                </div>
+            </div>
+            {{!-- 
+            <input type="text" name="{{name}}" id={{_id}} value="{{name}}" class="col-9 form-control" disabled>
+            <span onclick="edit(this);" class="form-control btn btn-warning">Edit</span>
+ --}}
+            {{/my_departments}}
+        </form>
 
-{{#if success}}
-<li>
-    <div>
-        {{!-- Success Alert --}}
-        <h3>Success</h3>
-        <p>{{success}}</p>
+        <script>
+            function edit(element) {
+                let department = element.parentElement.parentElement.children[0].children[0];
+
+                if (element.innerHTML == "Save") {
+                    department.disabled = true;
+                    element.innerHTML = "Edit";
+
+                    const new_id = department.id;
+                    const new_value = department.value;
+
+                    document.location.href = "/api/v2/department/update/" + new_id.toString() + "/" + new_value.toString();
+
+                } else {
+                    department.disabled = false;
+                    element.innerHTML = "Save";
+                }
+
+            }
+
+            function editold(element) {
+
+                if (element.innerHTML == "Save") {
+                    element.parentElement.children[0].disabled = true;
+                    element.innerHTML = "Edit";
+                    const new_id = element.parentElement.children[0].id;
+                    const new_value = element.parentElement.children[0].value;
+                    document.location.href =
+                        "/api/v2/department/update/" +
+                        new_id.toString() +
+                        "/" +
+                        new_value.toString();
+                } else {
+                    element.parentElement.children[1].disabled = false;
+                    element.innerHTML = "Save";
+                }
+
+            }
+        </script>
     </div>
-</li>
-{{/if}}
+</div>
 
 
-<form action="/api/v2/department/update" method="POST">
-    <ul>
-        <li><a href="/api/v2/department/create">New Department</a></li>
-        <li><a href="/api/v2/department/delete">Delete Department</a></li>
-        {{#my_departments}}
-        <li>
-            <label for="name"></label>
-            <input type="text" name="{{name}}" id={{_id}} value="{{name}}" disabled>
-            <span onclick="edit(this);">Edit</span>
-        </li>
-        {{/my_departments}}
-    </ul>
-</form>
+<style>
+    .dashboard {
+        margin: auto;
+        padding: 0px;
+        width: 70%;
+    }
 
-<script>
-    function edit(element) {
-        if (element.innerHTML == "Save") {
-            element.parentElement.children[1].disabled = true;
-            element.innerHTML = "Edit";
-            const new_id = element.parentElement.children[1].id;
-            const new_value = element.parentElement.children[1].value;
-            document.location.href =
-                "/api/v2/department/update/" +
-                new_id.toString() +
-                "/" +
-                new_value.toString();
-            // TODO: Somehow submit this to the server as a change.....
-        } else {
-            element.parentElement.children[1].disabled = false;
-            element.innerHTML = "Save";
+    @media only screen and (max-width: 600px) {
+        .dashboard {
+            width: 100%;
+            margin: auto;
+            padding: 0px;
         }
     }
-</script>
+</style>
