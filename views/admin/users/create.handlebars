@@ -1,0 +1,67 @@
+<div class="card dashboard">
+    <div class="card-header">
+        New Patient
+    </div>
+    <div class="card-body">
+        <form action="/api/v2/patient/create" method="POST">
+            <h3>Personal Information</h3>
+            <hr>
+            <div class="form-group">
+                <label for="first_name">First Name</label><br />
+                <input type="text" name="first_name" id="first_name" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name</label><br />
+                <input type="text" name="last_name" id="last_name" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label><br />
+                <input type="text" name="email" id="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label><br />
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+            <h3>Work</h3>
+            <hr>
+            <div class="form-group">
+                <label for="department">Department</label><br />
+                <select name="department" id="department" class="form-control" required>
+                    <option value="" selected disabled></option>
+                    {{!-- TODO: Implement departments functionality --}}
+                    {{#my_departments}}
+                    <option name={{name}} value={{name}} id={{_id}}>{{name}}</option>
+                    {{/my_departments}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="admin">Authority</label>
+                <select name="admin" id="admin" class="form-control" required>
+                    <option value="" selected disabled></option>
+                    <option value="0">Controller</option>
+                    <option value="1">Admin</option>
+                </select>
+            </div>
+            <button class="btn btn-primary">submit</button>
+        </form>
+    </div>
+    <br>
+    <br>
+    <p></p>
+</div>
+
+<style>
+    .dashboard {
+        margin: auto;
+        padding: 0px;
+        width: 70%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .dashboard {
+            width: 100%;
+            margin: auto;
+            padding: 0px;
+        }
+    }
+</style>

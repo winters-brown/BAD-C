@@ -6,6 +6,7 @@ const path = require("path");
 // Local Constants
 var MongooseClient = require("mongoose");
 const users = require("../schema/users");
+const departments = require("../schema/departments");
 
 // Configure our Mongoose Client
 MongooseClient.connect("mongodb://localhost/bad-c", {
@@ -83,8 +84,20 @@ router.get("/create", (req, res) => {
 			} else {
 				// Check if our user is an admin.
 				if (results.admin == 1) {
-					res.render("admin/users/new", {
-						title: "BAD-C | New User",
+					departments.find((err, results) => {
+						var my_departments = new Array();
+
+						for (let step = 0; step < results.length; step++) {
+							var temp = {
+								_id: results[step]._id,
+								name: results[step].name,
+							};
+							my_departments.push(temp);
+						}
+						res.render("admin/users/create", {
+							title: "BAD-C | New User",
+							my_departments,
+						});
 					});
 				} else {
 					// IF controller return controller dashboard
