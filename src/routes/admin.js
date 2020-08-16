@@ -141,33 +141,31 @@ router.post("/create", (req, res) => {
 
 						// No user exists with that email.
 						if (!results) {
-							// bcrypt.hash(req.body.password, 10, function (
-							// 	err,
-							// 	hash
-							// ) {
-							// 	var query = new users({
-							// 		// Personal information
-							// 		first_name: req.body.first_name,
-							// 		last_name: req.body.last_name,
-							// 		// Login Information
-							// 		email: req.body.email,
-							// 		// TODO: NOOOOOO Curses, I have to encrypt this...
-							// 		password: hash,
-							// 		// Does user have admin privelages
-							// 		admin: req.body.admin,
-							// 		// Department that user belongs to.
-							// 		// TODO: Should this be an array given that one user could manage multiple departments???
-							// 		department: req.body.department,
-							// 		// Approved login session token
-							// 		session_token: "null",
-							// 	});
+							bcrypt.hash(req.body.password, 10, function (
+								err,
+								hash
+							) {
+								var query = new users({
+									// Personal information
+									first_name: req.body.first_name,
+									last_name: req.body.last_name,
+									// Login Information
+									email: req.body.email,
+									// TODO: NOOOOOO Curses, I have to encrypt this...
+									password: hash,
+									// Does user have admin privelages
+									admin: req.body.admin,
+									// Department that user belongs to.
+									// TODO: Should this be an array given that one user could manage multiple departments???
+									department: req.body.department,
+									// Approved login session token
+									session_token: "null",
+								});
 
-							// 	query.save();
-							// });
-							res.json(req.body);
-
-							// TODO: Redirect with a notification
-							res.redirect("/api/v2/admin/");
+								query.save();
+								// TODO: Redirect with a notification
+								res.redirect("/api/v2/admin/");
+							});
 						} else {
 							console.log("error");
 						}
