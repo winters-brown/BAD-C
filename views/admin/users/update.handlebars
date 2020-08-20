@@ -1,0 +1,46 @@
+<div class="card dashboard">
+    <div class="card-header">
+        Manage Users
+    </div>
+    <div class="card-body">
+        {{#my_users}}
+        <div class="form-row">
+            <div class="col-10">
+                <input type="text" class="form-control" id="{{_id}}" value="{{first_name}} {{last_name}}" disabled>
+            </div>
+            <div class="col">
+                <span onclick="remove(this);" class="form-control text-center btn-danger">Delete</span>
+                <br>
+            </div>
+            <br>
+        </div>
+        {{/my_users}}
+    </div>
+    <br>
+    <br>
+    <script>
+        function remove(element) {
+            if (confirm("Are you sure you want to delete this user?")) {
+                document.location.href =
+                    "/api/v2/admin/delete/" +
+                    element.parentElement.parentElement.firstElementChild.firstElementChild.id
+            }
+        }
+    </script>
+</div>
+
+<style>
+    .dashboard {
+        margin: auto;
+        padding: 0px;
+        width: 70%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .dashboard {
+            width: 100%;
+            margin: auto;
+            padding: 0px;
+        }
+    }
+</style>
