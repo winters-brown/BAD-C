@@ -27,6 +27,10 @@
             </div>
         </div>
         {{/if}}
+        <div class="alert alert-warning" role="alert">
+            <h3>Warning!</h3>
+            Here you will change the department name, All users will still be associated to the department they were already assigned.
+        </div>
         <form action="/api/v2/department/update" method="POST">
             {{#my_departments}}
             <div class="form-row">
@@ -38,10 +42,6 @@
                     </br>
                 </div>
             </div>
-            {{!-- 
-            <input type="text" name="{{name}}" id={{_id}} value="{{name}}" class="col-9 form-control" disabled>
-            <span onclick="edit(this);" class="form-control btn btn-warning">Edit</span>
- --}}
             {{/my_departments}}
         </form>
 
