@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/winters-brown/Express-Template#readme",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "body-parse": "^0.1.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
