@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5e8fd4f0bd88952868acf132"},"first_name":"Josue","last_name":"Armenta-Diaz","email":"controller@gmail.com","password":"$2b$10$AhjT1K/27Mmgyesc3UufW.B24mM/ovSs56m9vdnxJ6OwBfS/TEiRa","admin":{"$numberInt":"0"},"department":"GLC-ITX","session_token":"null"}
+{"_id":{"$oid":"5e8fd34abd88952868acf130"},"first_name":"Joshua","last_name":"Winters-Brown","email":"admin@gmail.com","password":"$2b$10$AhjT1K/27Mmgyesc3UufW.B24mM/ovSs56m9vdnxJ6OwBfS/TEiRa","admin":{"$numberInt":"1"},"department":"GLC-ITX","session_token":"8afbdb6c-3bd3-4a4a-ad7c-a1360ebf1056"}
