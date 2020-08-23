@@ -222,8 +222,6 @@ router.get("/update", (req, res) => {
                             my_users.push(temp);
                         }
 
-                        console.log(my_users);
-
                         res.render("admin/users/update", {
                             title: "BAD-C | Manage User",
                             my_users,
