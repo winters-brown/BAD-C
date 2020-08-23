@@ -1,6 +1,13 @@
 <div class="card dashboard">
     <div class="card-header">
-        New User
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="/api/v2/admin/create">New User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/admin/update">Manage Users</a>
+            </li>
+        </ul>
     </div>
     <div class="card-body">
         <form action="/api/v2/admin/create" method="POST">
@@ -26,9 +33,11 @@
             <hr>
             <div class="form-group">
                 <label for="department">Department</label><br />
+                <div class="alert alert-warning" role="alert">
+                    Department assignments will determine what patients this user has access/control of
+                </div>
                 <select name="department" id="department" class="form-control" required>
                     <option value="" selected disabled></option>
-                    {{!-- TODO: Implement departments functionality --}}
                     {{#my_departments}}
                     <option name={{name}} value={{name}} id={{_id}}>{{name}}</option>
                     {{/my_departments}}

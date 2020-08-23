@@ -1,7 +1,15 @@
 <div class="card dashboard">
     <div class="card-header">
-        Manage Users
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/admin/create">New User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/api/v2/admin/update">Manage Users</a>
+            </li>
+        </ul>
     </div>
+
     <div class="card-body">
         {{#my_users}}
         <div class="form-row">
