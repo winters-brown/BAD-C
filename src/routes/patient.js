@@ -6,6 +6,7 @@ var MongooseClient = require("mongoose");
 const users = require("../schema/users");
 const document = require("../schema/patients");
 const departments = require("../schema/departments");
+const { update } = require("../schema/users");
 
 // Configure our Mongoose Client
 MongooseClient.connect("mongodb://localhost/bad-c", {
@@ -155,6 +156,53 @@ router.get("/update", (req, res) => {
                             my_patients,
                         });
                     });
+                } else {
+                    // IF controller return controller dashboard
+                    res.redirect("/api/v2/controller/");
+                }
+            }
+        });
+    }
+});
+
+router.post("/update", (req, res) => {
+    // Store client cookies locally.
+    const kID = req.cookies.id;
+    const kSession_token = req.cookies.session_token;
+
+    // Build our query for later.
+    var query = {
+        _id: kID,
+        session_token: kSession_token,
+    };
+
+    // Verify query is not null
+    if (query._id == null && query.session_token == null) {
+        // User hasent logged in yet or users session_token is exprired.
+        res.redirect("/api/v2/auth/login");
+    } else {
+        // Search our database with query
+        users.findOne(query, (err, results) => {
+            // Handle any errors that might occure while reading databse.
+            if (err) return console.error(err);
+
+            // No user exists with that id and session_token.
+            if (!results) {
+                res.redirect("/api/v2/auth/login");
+            } else {
+                // Check if our user is an admin.
+                if (results.admin == 1) {
+                    document.findByIdAndUpdate(
+                        { _id: req.body._id },
+                        req.body,
+                        {
+                            new: true,
+                        },
+                        (err, result) => {
+                            if (err) res.send(err);
+                            res.redirect("/api/v2/patient/update/");
+                        }
+                    );
                 } else {
                     // IF controller return controller dashboard
                     res.redirect("/api/v2/controller/");

@@ -1,18 +1,18 @@
 <div id="behaviour_generator" class="form-row bottom-pad" hidden>
     <div class="col-2">
         <select name="behaviour_question_type" id="behaviour_question_type" class="form-control" required>
-            <option value="Question Type" selected disabled> </option>
+            <option value="Question Type" selected> </option>
             <option value="counter">Counter</option>
             <option value="true_or_false">True or False</option>
         </select>
     </div>
     <div class="col">
         <input type="text" name="behaviour_prompt" placeholder="Behaviour Prompt" id="behaviour_prompt"
-            class="form-control" disabled required />
+            class="form-control" required />
     </div>
     <div class="col-2">
-        <button type="button" onclick="remove_behaviour(this)" class="btn btn-danger">
-            Delete
+        <button type="button" onclick="remove_behaviour(this)" class="form-control btn btn-danger">
+            Delete Behaviour
         </button>
     </div>
 
@@ -38,13 +38,13 @@
             {{#my_patients}}
             <div class="form-row">
                 <div class="col-2">
-                    <input type="text" class="form-control" value="{{department}}" disabled>
+                    <input type="text" class="form-control" value="{{department}}" readonly>
                 </div>
                 <div class="col-2">
-                    <input type="text" class="form-control" value="{{_id}}" disabled>
+                    <input type="text" class="form-control" value="{{_id}}" required readonly>
                 </div>
                 <div class="col">
-                    <input type="text" class="form-control" value="{{first_name}} {{last_name}}" disabled>
+                    <input type="text" class="form-control" value="{{first_name}} {{last_name}}" readonly>
                 </div>
                 <div class="col-2">
                     <span onclick="manage(this);" class="form-control text-center btn-warning">Manage</span>
@@ -57,7 +57,7 @@
         {{/if}}
 
         {{#if patient}}
-        <form action="/api/v2/patient/create" method="POST">
+        <form action="/api/v2/patient/update" method="POST">
             <div class="form-row">
                 <div class="col-4">
                     <h3>Patient</h3>
@@ -66,34 +66,37 @@
 
                 </div>
                 <div class="col-1">
-                    <span class="btn btn-warning" onclick="toggle_inputs();">Unlock</span>
+                    <span class="form-control btn btn-primary">Submit</span>
                 </div>
                 <div class="col-1">
-                    <button type="button" onclick="remove_element(this);" class="btn btn-danger">Delete</button>
+                    <button type="button" onclick="remove_element(this);"
+                        class="form-control btn btn-danger">Delete</button>
                 </div>
-
             </div>
             {{#patient}}
             <div class="form-row">
                 <div class="col">
                     <label for="first_name">First Name</label><br />
                     <input type="text" name="first_name" id="first_name" class="form-control" value="{{first_name}}"
-                        disabled required />
+                        required />
                 </div>
                 <div class="col">
                     <label for="last_name">Last Name</label><br />
                     <input type="text" name="last_name" id="last_name" class="form-control" value="{{last_name}}"
-                        disabled required />
+                        required />
                 </div>
-                <div class="col-2" hidden>
-                    <input type="text" class="form-control" id="_id" value="{{_id}}" disabled>
+                <div class="col-2">
+                    <label for="_id">ID</label>
+                    <input type="text" class="form-control" name="_id" id="_id" readonly="readonly" value="{{_id}}"
+                        required>
                 </div>
             </div>
             <div>
                 <label for="department">Department</label><br />
-                <select name="department" id="department" class="form-control" disabled required>
-                    <option value="{{department}}" selected disabled>{{department}}</option>
+                <select name="department" id="department" class="form-control" required>
+                    <option value="{{department}}">{{department}}</option>
                 </select>
+
             </div>
             {{/patient}}
 
@@ -110,7 +113,7 @@
 
                     </div>
                     <div class="col-2">
-                        <button type="button" onclick="add_behaviour();" class="btn btn-success">
+                        <button type="button" onclick="add_behaviour();" class="form-control btn btn-success">
                             Add Behaviour
                         </button>
                     </div>
@@ -158,6 +161,7 @@
                 </script>
                 {{/patient}}
             </div>
+            <button class="btn btn-primary">Submit</button>
         </form>
         {{/if}}
     </div>

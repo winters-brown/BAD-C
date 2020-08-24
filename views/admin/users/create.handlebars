@@ -33,15 +33,16 @@
             <hr>
             <div class="form-group">
                 <label for="department">Department</label><br />
-                <div class="alert alert-warning" role="alert">
-                    Department assignments will determine what patients this user has access/control of
-                </div>
                 <select name="department" id="department" class="form-control" required>
                     <option value="" selected disabled></option>
                     {{#my_departments}}
                     <option name={{name}} value={{name}} id={{_id}}>{{name}}</option>
                     {{/my_departments}}
                 </select>
+                <br>
+                <div class="alert alert-warning" role="alert">
+                    Department assignments will determine what patients this user has access/control of
+                </div>
             </div>
             <div class="form-group">
                 <label for="admin">Authority</label>
