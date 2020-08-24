@@ -167,7 +167,6 @@ router.post("/create", (req, res) => {
                                 res.redirect("/api/v2/admin/");
                             });
                         } else {
-                            console.log("error");
                         }
                     });
                 } else {

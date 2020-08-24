@@ -1,63 +1,216 @@
+<div id="behaviour_generator" class="form-row bottom-pad" hidden>
+    <div class="col-2">
+        <select name="behaviour_question_type" id="behaviour_question_type" class="form-control" required>
+            <option value="Question Type" selected disabled> </option>
+            <option value="counter">Counter</option>
+            <option value="true_or_false">True or False</option>
+        </select>
+    </div>
+    <div class="col">
+        <input type="text" name="behaviour_prompt" placeholder="Behaviour Prompt" id="behaviour_prompt"
+            class="form-control" disabled required />
+    </div>
+    <div class="col-2">
+        <button type="button" onclick="remove_behaviour(this)" class="btn btn-danger">
+            Delete
+        </button>
+    </div>
+
+    <br />
+    <br />
+</div>
+
 <div class="card dashboard">
     <div class="card-header">
-        Update Patient
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/patient/create">Create</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/api/v2/patient/update">Manage</a>
+            </li>
+        </ul>
     </div>
     <div class="card-body">
-        {{#if error}}
-        <div class="alert alert-danger" role="alert">
-            <h3>Error</h3>
-            <p>{{error}}</p>
-        </div>
-        {{/if}}
-
-        {{#if success}}
-        <div class="alert alert-success" role="alert">
-            <h3>Success</h3>
-            <p>{{success}}</p>
-        </div>
-        {{/if}}
-
         {{#if my_patients}}
         <div>
             <h3>Select a patient</h3>
-            <div class="mb-3">
-                <select class="custom-select" required>
-                    <option value="" disabled></option>
-                    {{#my_patients}}
-                    <option id="{{_id}}" value="{{_id}}">{{department}} || {{first_name}} {{last_name}}</option>
-                    {{/my_patients}}
-                </select>
-                <button onclick="parse(this);" class="btn btn-warning">Update</button>
+            {{#my_patients}}
+            <div class="form-row">
+                <div class="col-2">
+                    <input type="text" class="form-control" value="{{department}}" disabled>
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control" value="{{_id}}" disabled>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" value="{{first_name}} {{last_name}}" disabled>
+                </div>
+                <div class="col-2">
+                    <span onclick="manage(this);" class="form-control text-center btn-warning">Manage</span>
+                    <br>
+                </div>
             </div>
+            {{/my_patients}}
 
         </div>
         {{/if}}
 
+        {{#if patient}}
+        <form action="/api/v2/patient/create" method="POST">
+            <div class="form-row">
+                <div class="col-4">
+                    <h3>Patient</h3>
+                </div>
+                <div class="col">
+
+                </div>
+                <div class="col-1">
+                    <span class="btn btn-warning" onclick="toggle_inputs();">Unlock</span>
+                </div>
+                <div class="col-1">
+                    <button type="button" onclick="remove_element(this);" class="btn btn-danger">Delete</button>
+                </div>
+
+            </div>
+            {{#patient}}
+            <div class="form-row">
+                <div class="col">
+                    <label for="first_name">First Name</label><br />
+                    <input type="text" name="first_name" id="first_name" class="form-control" value="{{first_name}}"
+                        disabled required />
+                </div>
+                <div class="col">
+                    <label for="last_name">Last Name</label><br />
+                    <input type="text" name="last_name" id="last_name" class="form-control" value="{{last_name}}"
+                        disabled required />
+                </div>
+                <div class="col-2" hidden>
+                    <input type="text" class="form-control" id="_id" value="{{_id}}" disabled>
+                </div>
+            </div>
+            <div>
+                <label for="department">Department</label><br />
+                <select name="department" id="department" class="form-control" disabled required>
+                    <option value="{{department}}" selected disabled>{{department}}</option>
+                </select>
+            </div>
+            {{/patient}}
+
+            <br>
+            <hr>
+            <br>
+
+            <div id="new_patient">
+                <div class="form-row">
+                    <div class="col-4">
+                        <h3>Behaviours</h3>
+                    </div>
+                    <div class="col">
+
+                    </div>
+                    <div class="col-2">
+                        <button type="button" onclick="add_behaviour();" class="btn btn-success">
+                            Add Behaviour
+                        </button>
+                    </div>
+                </div>
+                {{#patient}}
+
+
+
+                <span id="raw_prompt" hidden>{{behaviour_prompt}}</span>
+                <span id="raw_type" hidden>{{behaviour_question_type}}</span>
+
+                <script>
+                    // Capture raw content
+                    var raw_prompt = document.getElementById("raw_prompt").innerHTML;
+                    var raw_type = document.getElementById("raw_type").innerHTML;
+                    // Split the CSV into an arrays
+                    var prompt = raw_prompt.split(",");
+                    var type = raw_type.split(",");
+
+                    // Loop over our new arrays
+                    if (type.length == prompt.length) {
+                        var i = 0;
+
+                        for (var i = 0; i < prompt.length; i++) {
+                            // Capture our template
+                            var behaviour_generator = document.getElementById(
+                                "behaviour_generator"
+                            );
+
+                            // Fill out our template
+                            var dupe = behaviour_generator.cloneNode(true);
+                            dupe.hidden = false;
+
+                            dupe.children[0].children[0].children[0].value = type[i];
+                            dupe.children[0].children[0].children[0].innerHTML = type[i];
+
+                            dupe.children[1].children[0].value = prompt[i];
+
+                            document.getElementById("new_patient").appendChild(dupe);
+                        }
+
+                    }
+                    document.getElementById("new_patient").appendChild(dupe);
+
+                </script>
+                {{/patient}}
+            </div>
+        </form>
+        {{/if}}
     </div>
+
 </div>
 
+
 <script>
+    function add_behaviour() {
+        var behaviour_generator = document.getElementById(
+            "behaviour_generator"
+        );
+
+        var dupe = behaviour_generator.cloneNode(true);
+        dupe.hidden = false;
+
+        document.getElementById("new_patient").appendChild(dupe);
+    }
+
+    function remove_behaviour(element) {
+        element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode)
+    }
+
     function edit(element) {
-        if (element.innerHTML == "Save") {
-            element.parentElement.children[1].disabled = true;
-            element.innerHTML = "Edit";
-            const new_id = element.parentElement.children[1].id;
-            const new_value = element.parentElement.children[1].value;
-            document.location.href =
-                "/api/v2/department/update/" +
-                new_id.toString() +
-                "/" +
-                new_value.toString();
-            // TODO: Somehow submit this to the server as a change.....
-        } else {
-            element.parentElement.children[1].disabled = false;
-            element.innerHTML = "Save";
+        if (element.innerHTML == " Save") {
+            element.parentElement.children[1].disabled = true; element.innerHTML = "Edit";
+            const new_id = element.parentElement.children[1].id; const
+                new_value = element.parentElement.children[1].value;
+            document.location.href = "/api/v2/department/update/" + new_id.toString() + "/" +
+                new_value.toString(); // TODO: Somehow submit this to the server as a change..... } else {
+            element.parentElement.children[1].disabled = false; element.innerHTML = "Save";
         }
     }
 
-    function parse(element) {
-        console.log(element.parentElement.children.id);
+    function manage(element) {
+        document.location.href = "/api/v2/patient/update/" +
+            element.parentElement.parentElement.children[1].children[0].value.toString();
     }
+
+    function remove_element(element) {
+        if (window.confirm("Deleting this patient is permanent are you sure you want to continue?")) {
+            document.location.href = "/api/v2/patient/delete/" + document.getElementById("_id").value;
+        }
+    }
+
+    function toggle_inputs() {
+        var inputs = document.getElementsByTagName('input');
+        for (var i = inputs.length, n = 0; n < i; n++) {
+            inputs[n].disabled = !inputs[n].disabled;
+        }
+    }
+
+</script>
 </script>
 
 <style>
@@ -65,6 +218,10 @@
         margin: auto;
         padding: 0px;
         width: 70%;
+    }
+
+    .bottom-pad {
+        padding-bottom: 20px;
     }
 
     @media only screen and (max-width: 600px) {

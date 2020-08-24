@@ -1,16 +1,20 @@
-<div id="behaviour_generator" class="form-group" hidden>
-    <label for="behaviour_prompt">Behaviour Prompt</label><br />
-    <input type="text" name="behaviour_prompt" placeholder="" id="behaviour_prompt" class="form-control" required />
-
-    <label for="behaviour_question_type">Question Type</label><br />
-    <select name="behaviour_question_type" id="behaviour_question_type" class="form-control mb-2" required>
-        <option value="" selected disabled> </option>
-        <option value="counter">Counter</option>
-        <option value="true_or_false">True or False</option>
-    </select>
-    <button type="button" onclick="remove_behaviour(this)" class="btn btn-danger mb-2">
-        Remove Element
-    </button>
+<div id="behaviour_generator" class="form-row" hidden>
+    <div class="col-2">
+        <select name="behaviour_question_type" id="behaviour_question_type" class="form-control " required>
+            <option value="Question Type" selected disabled> </option>
+            <option value="counter">Counter</option>
+            <option value="true_or_false">True or False</option>
+        </select>
+    </div>
+    <div class="col">
+        <input type="text" name="behaviour_prompt" placeholder="Behaviour Prompt" id="behaviour_prompt"
+            class="form-control" required />
+    </div>
+    <div class="col-2">
+        <button type="button" onclick="remove_behaviour(this)" class="btn btn-danger">
+            Delete
+        </button>
+    </div>
 
     <br />
     <br />
@@ -18,40 +22,68 @@
 
 <div class="card dashboard">
     <div class="card-header">
-        New Patient
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="/api/v2/patient/create">Create</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/patient/update">Manage</a>
+            </li>
+        </ul>
     </div>
     <div class="card-body">
         <form action="/api/v2/patient/create" method="POST">
-            <div class="form-group">
-                <label for="first_name">First Name</label><br />
-                <input type="text" name="first_name" id="first_name" class="form-control" required />
+            <div class="form-row">
+                <div class="col-4">
+                    <h3>Patient</h3>
+                </div>
+                <div class="col">
+
+                </div>
+                <div class="col-1">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
             </div>
-            <div>
-                <label for="last_name">Last Name</label><br />
-                <input type="text" name="last_name" id="last_name" class="form-control" required />
+            <div class="form-row">
+                <div class="col">
+                    <label for="first_name">First Name</label><br />
+                    <input type="text" name="first_name" id="first_name" class="form-control" required />
+                </div>
+                <div class="col">
+                    <label for="last_name">Last Name</label><br />
+                    <input type="text" name="last_name" id="last_name" class="form-control" required />
+                </div>
             </div>
+
             <div>
                 <label for="department">Department</label><br />
-                <select name="department" id="department" class="form-control">
+                <select name="department" id="department" class="form-control" required>
                     <option value="" selected disabled></option>
                     {{#my_departments}}
                     <option name={{name}} value={{name}} id={{_id}}>{{name}}</option>
                     {{/my_departments}}
                 </select>
             </div>
+
             <br>
             <hr>
             <br>
-            <div id="new_patient">
-                <h3>Behaviours</h3>
-            </div>
-            <div>
-                <button type="button" onclick="add_behaviour();" class="btn btn-success">
-                    Add Behaviour
-                </button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
 
+            <div id="new_patient">
+                <div class="form-row">
+                    <div class="col-2">
+                        <h3>Behaviours</h3>
+                    </div>
+                    <div class="col">
+
+                    </div>
+                    <div class="col-2">
+                        <button type="button" onclick="add_behaviour();" class="btn btn-success">
+                            Add Behaviour
+                        </button>
+                    </div>
+                </div>
+            </div>
         </form>
 
     </div>
@@ -71,7 +103,7 @@
     }
 
     function remove_behaviour(element) {
-        element.parentNode.parentNode.removeChild(element.parentNode);
+        element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode)
     }
 </script>
 
