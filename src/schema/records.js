@@ -1,4 +1,4 @@
-var MongooseClient = require('mongoose');
+var MongooseClient = require("mongoose");
 var Schema = MongooseClient.Schema;
 
 var Records = new Schema({
@@ -11,7 +11,8 @@ var Records = new Schema({
     last_name: String,
     // Patient Specific information.
     behaviour_prompt: [String],
-    behavoiur_response: [String]
+    behaviour_question_type: [String],
+    behavoiur_response: [String],
 });
 
 module.exports = MongooseClient.model("Records", Records);

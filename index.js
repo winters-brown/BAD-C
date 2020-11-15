@@ -14,6 +14,7 @@ const admin = require("./src/routes/admin");
 const controller = require("./src/routes/controller");
 const department = require("./src/routes/department");
 const patient = require("./src/routes/patient");
+const records = require("./src/routes/record");
 
 // Enforce Middleware
 // Parse application/x-www-form-urlencoded
@@ -33,6 +34,7 @@ app.use("/api/v2/admin/", admin);
 app.use("/api/v2/controller/", controller);
 app.use("/api/v2/department/", department);
 app.use("/api/v2/patient/", patient);
+app.use("/api/v2/record/", records);
 
 // Serve Static Files
 // app.use("/", app.render("index"));

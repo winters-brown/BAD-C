@@ -1,12 +1,13 @@
 // Import Librarys
 const express = require("express");
+const bcrypt = require("bcrypt");
+const path = require("path");
 
 // Local Constants
 var MongooseClient = require("mongoose");
 const users = require("../schema/users");
-const document = require("../schema/patients");
-const departments = require("../schema/departments");
-const { update } = require("../schema/users");
+const patients = require("../schema/patients");
+const document = require("../schema/records");
 
 // Configure our Mongoose Client
 MongooseClient.connect("mongodb://localhost/bad-c", {
@@ -17,8 +18,45 @@ MongooseClient.connect("mongodb://localhost/bad-c", {
 // Access our global router object.
 let router = express.Router();
 
-// Export router contents
-module.exports = router;
+router.get("/", (req, res) => {
+    // Store client cookies locally.
+    const kID = req.cookies.id;
+    const kSession_token = req.cookies.session_token;
+
+    // Build our query for later.
+    var query = {
+        _id: kID,
+        session_token: kSession_token,
+    };
+
+    // Verify query is not null
+    if (query._id == null && query.session_token == null) {
+        // User hasent logged in yet or users session_token is exprired.
+        res.redirect("/api/v2/auth/login");
+    } else {
+        // Search our database with query
+        users.findOne(query, (err, results) => {
+            // Handle any errors that might occure while reading databse.
+            if (err) return console.error(err);
+
+            // No user exists with that id and session_token.
+            if (!results) {
+                res.redirect("/api/v2/auth/login");
+            } else {
+                // Check if our user is an admin.
+                if (results.admin == 1) {
+                    // Redirect our admin to their dashboard
+                    res.render("admin/dashboard", {
+                        title: "BAD-C | Admin Dasbhoard",
+                    });
+                } else {
+                    // IF controller return controller dashboard
+                    res.redirect("/api/v2/controller/");
+                }
+            }
+        });
+    }
+});
 
 router.get("/create", (req, res) => {
     // Store client cookies locally.
@@ -47,101 +85,10 @@ router.get("/create", (req, res) => {
             } else {
                 // Check if our user is an admin.
                 if (results.admin == 1) {
-                    departments.find((err, results) => {
-                        var my_departments = new Array();
-
-                        for (let step = 0; step < results.length; step++) {
-                            var temp = {
-                                _id: results[step]._id,
-                                name: results[step].name,
-                            };
-                            my_departments.push(temp);
-                        }
-
-                        res.render("admin/patient/create", {
-                            error: err,
-                            my_departments,
-                        });
-                    });
-                } else {
-                    // IF controller return controller dashboard
-                    res.redirect("/api/v2/controller/");
-                }
-            }
-        });
-    }
-});
-
-router.post("/create", (req, res) => {
-    // Store client cookies locally.
-    const kID = req.cookies.id;
-    const kSession_token = req.cookies.session_token;
-
-    // Build our query for later.
-    var query = {
-        _id: kID,
-        session_token: kSession_token,
-    };
-
-    // Verify query is not null
-    if (query._id == null && query.session_token == null) {
-        // User hasent logged in yet or users session_token is exprired.
-        res.redirect("/api/v2/auth/login");
-    } else {
-        // Search our database with query
-        users.findOne(query, (err, results) => {
-            // Handle any errors that might occure while reading databse.
-            if (err) return console.error(err);
-
-            // No user exists with that id and session_token.
-            if (!results) {
-                res.redirect("/api/v2/auth/login");
-            } else {
-                // Check if our user is an admin.
-                if (results.admin == 1) {
-                    let new_patient = new document(req.body);
-                    new_patient.save();
-                    res.redirect("/api/v2/patient/create");
-                } else {
-                    // IF controller return controller dashboard
-                    res.redirect("/api/v2/controller/");
-                }
-            }
-        });
-    }
-});
-
-router.get("/update", (req, res) => {
-    // Store client cookies locally.
-    const kID = req.cookies.id;
-    const kSession_token = req.cookies.session_token;
-
-    // Build our query for later.
-    var query = {
-        _id: kID,
-        session_token: kSession_token,
-    };
-
-    // Verify query is not null
-    if (query._id == null && query.session_token == null) {
-        // User hasent logged in yet or users session_token is exprired.
-        res.redirect("/api/v2/auth/login");
-    } else {
-        // Search our database with query
-        users.findOne(query, (err, results) => {
-            // Handle any errors that might occure while reading databse.
-            if (err) return console.error(err);
-
-            // No user exists with that id and session_token.
-            if (!results) {
-                res.redirect("/api/v2/auth/login");
-            } else {
-                // Check if our user is an admin.
-                if (results.admin == 1) {
-                    document.find(
+                    patients.find(
                         { department: results.department },
                         (err, results) => {
-                            console.log(results, query.department);
+                            console.log(results);
                             var my_patients = new Array();
 
                             for (let step = 0; step < results.length; step++) {
@@ -154,7 +101,7 @@ router.get("/update", (req, res) => {
                                 my_patients.push(temp);
                             }
 
-                            res.render("admin/patient/update", {
+                            res.render("admin/records/create", {
                                 error: err,
                                 my_patients,
                             });
@@ -169,7 +116,7 @@ router.get("/update", (req, res) => {
     }
 });
 
-router.post("/update", (req, res) => {
+router.get("/create/:id", (req, res) => {
     // Store client cookies locally.
     const kID = req.cookies.id;
     const kSession_token = req.cookies.session_token;
@@ -196,54 +143,7 @@ router.post("/update", (req, res) => {
             } else {
                 // Check if our user is an admin.
                 if (results.admin == 1) {
-                    document.findByIdAndUpdate(
-                        { _id: req.body._id },
-                        req.body,
-                        {
-                            new: true,
-                        },
-                        (err, result) => {
-                            if (err) res.send(err);
-                            res.redirect("/api/v2/patient/update/");
-                        }
-                    );
-                } else {
-                    // IF controller return controller dashboard
-                    res.redirect("/api/v2/controller/");
-                }
-            }
-        });
-    }
-});
-
-router.get("/update/:id", (req, res) => {
-    // Store client cookies locally.
-    const kID = req.cookies.id;
-    const kSession_token = req.cookies.session_token;
-
-    // Build our query for later.
-    var query = {
-        _id: kID,
-        session_token: kSession_token,
-    };
-
-    // Verify query is not null
-    if (query._id == null && query.session_token == null) {
-        // User hasent logged in yet or users session_token is exprired.
-        res.redirect("/api/v2/auth/login");
-    } else {
-        // Search our database with query
-        users.findOne(query, (err, results) => {
-            // Handle any errors that might occure while reading databse.
-            if (err) return console.error(err);
-
-            // No user exists with that id and session_token.
-            if (!results) {
-                res.redirect("/api/v2/auth/login");
-            } else {
-                // Check if our user is an admin.
-                if (results.admin == 1) {
-                    document.find({ _id: req.params.id }, (err, results) => {
+                    patients.find({ _id: req.params.id }, (err, results) => {
                         var patient = new Array();
 
                         for (let step = 0; step < results.length; step++) {
@@ -260,7 +160,7 @@ router.get("/update/:id", (req, res) => {
 
                             patient.push(temp);
 
-                            res.render("admin/patient/update", {
+                            res.render("admin/records/create", {
                                 error: err,
                                 patient,
                             });
@@ -272,7 +172,11 @@ router.get("/update/:id", (req, res) => {
     }
 });
 
-router.get("/delete/:id", (req, res) => {
+router.post("/create", (req, res) => {
+    res.send(req.body);
+});
+
+router.get("/manage", (req, res) => {
     // Store client cookies locally.
     const kID = req.cookies.id;
     const kSession_token = req.cookies.session_token;
@@ -299,10 +203,9 @@ router.get("/delete/:id", (req, res) => {
             } else {
                 // Check if our user is an admin.
                 if (results.admin == 1) {
-                    // Redirect our admin to their dashboards
-                    document.deleteOne({ _id: req.params.id }, function (err) {
-                        if (err) console.error(err);
-                        res.redirect("/api/v2/patient/update");
+                    // Redirect our admin to their dashboard
+                    res.render("admin/records/update", {
+                        title: "BAD-C | Admin Dasbhoard",
                     });
                 } else {
                     // IF controller return controller dashboard
@@ -312,3 +215,6 @@ router.get("/delete/:id", (req, res) => {
         });
     }
 });
+
+// Export router contents
+module.exports = router;

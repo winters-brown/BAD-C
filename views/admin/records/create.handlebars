@@ -1,0 +1,199 @@
+<div id="behaviour_generator" class="form-row bottom-pad" hidden>
+    <div class="col-2">
+        <select name="behaviour_question_type" id="behaviour_question_type" class="form-control" required>
+            <option value="Question Type" selected> </option>
+            <option value="counter">Counter</option>
+            <option value="true_or_false">True or False</option>
+        </select>
+    </div>
+    <div class="col">
+        <input type="text" name="behaviour_prompt" placeholder="Behaviour Prompt" id="behaviour_prompt"
+            class="form-control" required />
+    </div>
+    <div class="col-2">
+        <button type="button" onclick="remove_behaviour(this)" class="form-control btn btn-danger">
+            Delete Behaviour
+        </button>
+    </div>
+
+    <br />
+    <br />
+</div>
+
+<div class="card dashboard">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="/api/v2/record/create">New</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/record/manage">Manage</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        {{#if error}}
+        <div>
+            <div class="alert alert-danger" role="alert">
+                <p>{{error}}</p>
+            </div>
+        </div>
+        {{/if}}
+        {{#if success}}
+        <div>
+            <div class="alert alert-success" role="alert">
+                <p>{{success}}</p>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if my_patients}}
+        <div>
+            <h3>Select a patient</h3>
+            {{#my_patients}}
+            <div class="form-row">
+                <div class="col-2">
+                    <input type="text" class="form-control" value="{{_id}}" required readonly>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" value="{{first_name}} {{last_name}}" readonly>
+                </div>
+                <div class="col-2">
+                    <span onclick="manage(this);" class="form-control text-center btn-warning">Manage</span>
+                    <br>
+                </div>
+            </div>
+            {{/my_patients}}
+
+        </div>
+        {{/if}}
+
+        {{#if patient}}
+        <form action="/api/v2/record/create" method="POST">
+            <div class="form-row">
+                <div class="col-4">
+                    <h3>Patient</h3>
+                </div>
+                <div class="col">
+
+                </div>
+                <div class="col-1">
+                    <span class="form-control btn btn-primary">Submit</span>
+                </div>
+            </div>
+            {{#patient}}
+            <div class="form-row">
+                <div class="col">
+                    <label for="first_name">First Name</label><br />
+                    <input type="text" name="first_name" id="first_name" class="form-control" value="{{first_name}}"
+                        required readonly />
+                </div>
+                <div class="col">
+                    <label for="last_name">Last Name</label><br />
+                    <input type="text" name="last_name" id="last_name" class="form-control" value="{{last_name}}"
+                        required readonly />
+                </div>
+                <div class="col-2">
+                    <label for="_id">ID</label>
+                    <input type="text" class="form-control" name="_id" id="_id" readonly="readonly" value="{{_id}}"
+                        required readonly />
+                </div>
+            </div>
+            <div>
+                <label for="department">Department</label><br />
+                <select name="department" id="department" class="form-control" required readonly>
+                    <option value="{{department}}">{{department}}</option>
+                </select>
+
+            </div>
+            {{/patient}}
+
+            <br>
+            <hr>
+            <br>
+
+            <div id="new_patient">
+                <div class="form-row">
+                    <div class="col-4">
+                        <h3>Behaviours</h3>
+                    </div>
+                    <div class="col">
+
+                    </div>
+                </div>
+                {{#patient}}
+
+
+
+                <span id="raw_prompt" hidden>{{behaviour_prompt}}</span>
+                <span id="raw_type" hidden>{{behaviour_question_type}}</span>
+
+                {{!-- 
+                behaviour_prompt: [String],
+                behaviour_question_type: [String],
+                behavoiur_response: [String],
+                 --}}
+                <div class="tf_demo">
+                    <input type="radio" id="True" name="gender" value="True">
+                    <label for="True">True</label><br>
+                    <input type="radio" id="False" name="gender" value="False">
+                    <label for="False">False</label><br>
+                </div>
+                <script>
+                    // Capture raw content
+                    var raw_prompt = document.getElementById("raw_prompt").innerHTML;
+                    var raw_type = document.getElementById("raw_type").innerHTML;
+                    // Split the CSV into arrays
+                    var prompt = raw_prompt.split(",");
+                    var type = raw_type.split(",");
+
+                    console.table(type);
+                    console.table(prompt);
+
+
+                    // Loop over our new arrays
+                    if (type.length == prompt.length) {
+                        var i = 0;
+
+                        for (var i = 0; i < prompt.length; i++) {
+                            if (type[i] == "true_or_false") {
+                                console.log("True or False: " + prompt[i]);
+
+                            } else if (type[i] == "counter") {
+                                console.log("Couter: " + prompt[i]);
+                            }
+                        }
+                    }
+                </script>
+                {{/patient}}
+            </div>
+            <button class="btn btn-primary">Submit</button>
+        </form>
+        {{/if}}
+
+    </div>
+</div>
+
+<script>
+    function manage(element) {
+        document.location.href = "/api/v2/record/create/" +
+            element.parentElement.parentElement.children[0].children[0].value
+    }
+
+</script>
+
+<style>
+    .dashboard {
+        margin: auto;
+        padding: 0px;
+        width: 70%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .dashboard {
+            width: 100%;
+            margin: auto;
+            padding: 0px;
+        }
+    }
+</style>

@@ -1,0 +1,46 @@
+<div class="card dashboard">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/api/v2/record/create">New</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/api/v2/record/delete">Manage</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        {{#if error}}
+        <div>
+            <div class="alert alert-danger" role="alert">
+                <p>{{error}}</p>
+            </div>
+        </div>
+        {{/if}}
+        {{#if success}}
+        <div>
+            <div class="alert alert-success" role="alert">
+                <p>{{success}}</p>
+            </div>
+        </div>
+        {{/if}}
+
+    </div>
+</div>
+
+
+<style>
+    .dashboard {
+        margin: auto;
+        padding: 0px;
+        width: 70%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .dashboard {
+            width: 100%;
+            margin: auto;
+            padding: 0px;
+        }
+    }
+</style>
